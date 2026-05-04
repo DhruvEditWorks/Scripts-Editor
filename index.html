@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Opening Scene Script - dS Frameworks</title>
+    <title>Opening Scene Ka Asli Raaz - Script</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
@@ -22,9 +22,6 @@
                         themeWhite: 'var(--theme-white)',
                         themeBlack: 'var(--theme-black)',
                         themeRed: 'var(--theme-red)',
-                        boxBg: 'var(--box-bg)',
-                        borderColor: 'var(--border-color)',
-                        noteBg: 'var(--note-bg)',
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -37,33 +34,44 @@
     </script>
     <style>
         :root {
-            /* Light Mode Variables */
             --theme-white: #FFFFFF;
+            --theme-bg: #FFFFFF;
             --theme-black: #111111;
             --theme-red: #E50914;
             --bg-color: #FFFFFF;
-            --box-bg: #f9fafb; /* gray-50 equivalent */
-            --border-color: #e5e7eb; /* gray-200 equivalent */
-            --note-bg: #f8f9fa;
-        }
-
-        body.dark-mode {
-            /* Dark Mode Variables */
-            --theme-white: #111111;
-            --theme-black: #f3f4f6;
-            --bg-color: #121212;
-            --box-bg: #1e1e1e;
-            --border-color: #333333;
-            --note-bg: #222222;
         }
 
         body { 
-            background-color: var(--bg-color); 
+            background-color: var(--theme-bg); 
             color: var(--theme-black); 
             word-wrap: break-word; 
             overflow-wrap: break-word; 
             -webkit-font-smoothing: antialiased;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background-color 0.3s ease;
+        }
+        body.dark-mode {
+            --theme-bg: #111111;
+            --theme-black: #FFFFFF;
+            --theme-white: #111111;
+            --bg-color: #111111;
+        }
+        body.dark-mode .modal-content,
+        body.dark-mode #control-panel .panel-surface,
+        body.dark-mode #save-status {
+            background: #181818;
+            color: #ffffff;
+            border-color: rgba(255,255,255,0.14);
+        }
+        body.dark-mode .th-block {
+            background: #181818;
+            border-color: rgba(255,255,255,0.12);
+            box-shadow: 0 18px 45px rgba(0,0,0,0.3);
+        }
+        body.dark-mode .direction-note,
+        body.dark-mode .broll-cues {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.14);
+            color: #d1d5db;
         }
         
         /* Floating Control Panel Hidden during Print */
@@ -78,7 +86,7 @@
         }
         [contenteditable="true"]:focus {
             outline: 2px solid var(--theme-red);
-            background-color: rgba(128, 128, 128, 0.05);
+            background-color: rgba(0, 0, 0, 0.02);
         }
 
         /* Voiceover Text Styling */
@@ -94,8 +102,8 @@
         .pause-badge {
             display: inline-flex;
             align-items: center;
-            background-color: var(--border-color);
-            color: var(--theme-black);
+            background-color: rgba(0,0,0,0.05);
+            color: #6b7280;
             font-size: 0.65rem;
             font-weight: 700;
             padding: 2px 8px;
@@ -103,28 +111,29 @@
             margin: 0 6px;
             text-transform: uppercase;
             letter-spacing: 0.1em;
+            border: 1px solid rgba(0,0,0,0.1);
             vertical-align: middle;
             font-family: 'Inter', sans-serif;
-            opacity: 0.8;
         }
         .pause-badge i { margin-right: 4px; color: var(--theme-red); }
 
         /* Direction Notes (Voice/Music) */
         .direction-note {
-            background-color: var(--note-bg);
-            border-left: 3px solid var(--border-color);
+            background-color: #f8f9fa;
+            border-left: 3px solid #cbd5e1;
             padding: 12px 16px;
             margin-bottom: 20px;
             border-radius: 0 8px 8px 0;
             font-size: 0.9rem;
-            color: var(--theme-black);
-            opacity: 0.9;
+            color: #475569;
         }
+        .direction-note strong { color: var(--theme-black); }
 
         /* B-Roll Cues Block */
         .broll-cues {
-            background-color: var(--box-bg);
-            border: 1px solid var(--border-color);
+            background-color: rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.06);
+            border-left: 4px solid var(--theme-red);
             border-radius: 8px;
             padding: 20px;
             margin-top: 24px;
@@ -133,24 +142,26 @@
 
         /* Talking Head Block Styling */
         .th-block {
-            background-color: var(--theme-white);
+            background-color: #ffffff;
             color: var(--theme-black);
             padding: 24px 32px;
             margin-top: 24px;
             margin-bottom: 24px;
             border-radius: 16px;
-            border: 1px solid var(--border-color);
+            border: 1px solid rgba(0,0,0,0.04);
             font-family: 'Playfair Display', serif;
             font-size: 1.25rem;
             line-height: 1.7;
             position: relative;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+            transition: all 0.3s ease;
         }
         .th-block i { color: var(--theme-red); margin-right: 12px; font-size: 0.85em; opacity: 0.8; }
+        .th-block strong { color: var(--theme-black); }
 
         .tech-number { font-family: 'Playfair Display', serif; }
 
-        /* Custom Modals */
+        /* Custom Modal for API Keys */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -163,124 +174,164 @@
         }
         .modal-content {
             background: #fff;
-            color: #111;
             padding: 30px;
             border-radius: 16px;
             width: 90%;
             max-width: 450px;
+            max-height: 86vh;
+            overflow-y: auto;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             animation: modalFadeIn 0.3s ease;
+        }
+        .modal-content.wide { max-width: 620px; }
+        .project-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #fff;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+        .project-row:hover {
+            border-color: var(--theme-red);
+            transform: translateY(-1px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
         }
         @keyframes modalFadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
-        .file-list-item {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            transition: background 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .file-list-item:hover { background: #f3f4f6; }
 
         /* Print CSS */
         @media print {
             @page { size: A4; margin: 25mm 20mm; }
-            body { font-size: 11pt; padding: 0 !important; background: #FFF !important; color: #111 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .hide-on-print { display: none !important; }
+            body { font-size: 11pt; padding: 0 !important; background: #FFF; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .hide-on-print, .modal-overlay, button, #control-panel, #save-status { display: none !important; }
             .container { max-width: 100% !important; width: 100% !important; padding: 0 !important; margin: 0 auto !important; }
             section, .tech-box { page-break-inside: auto !important; break-inside: auto !important; display: block; }
             .broll-cues, .th-block, .direction-note { page-break-inside: avoid !important; break-inside: avoid !important; display: block; }
             h1, h2, h3, h4, h5 { page-break-after: avoid !important; break-after: avoid !important; }
             section { margin-bottom: 30px !important; }
+            header .grid { display: flex !important; justify-content: space-between !important; align-items: center !important; }
+            header .grid > div { flex: 1 !important; border-right: 1px solid #e5e7eb !important; margin-top: 0 !important; }
+            header .grid > div:last-child { border-right: none !important; }
         }
     </style>
 </head>
 <body class="font-sans leading-relaxed tracking-wide selection:bg-themeRed selection:text-white">
 
-    <!-- Auth / Setup Modal (Appears Only Once) -->
+    <!-- Google Drive Sign In Modal -->
     <div id="drive-setup-modal" class="modal-overlay hide-on-print">
         <div class="modal-content text-center">
-            <h2 class="text-2xl font-bold mb-2 flex items-center justify-center gap-2"><i class="fa-solid fa-key text-blue-500"></i> API Setup</h2>
-            <p class="text-gray-600 text-sm mb-6">Enter your credentials once. They will be saved securely in your browser for seamless Google Sign-In later.</p>
-            <div class="space-y-4 text-left">
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Google Client ID</label>
-                    <input type="text" id="gdrive-client-id" placeholder="Paste Client ID..." class="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500">
-                </div>
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-1">Google API Key</label>
-                    <input type="text" id="gdrive-api-key" placeholder="Paste API Key..." class="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500">
-                </div>
+            <h2 class="text-2xl font-bold mb-2 flex items-center justify-center gap-2"><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo" class="w-6 h-6"> Google Drive Sign In</h2>
+            <p class="text-gray-600 text-sm mb-6">Sign in once to save and load projects from your Drive folder. The app will remember this browser session and silently reconnect whenever Google allows it.</p>
+            <div id="drive-config-warning" class="hidden text-left bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl p-4 mb-6">
+                <strong>Developer setup needed:</strong> Add your Google Client ID and API Key inside the <code>GOOGLE_DRIVE_CONFIG</code> object in this HTML file.
             </div>
             <div class="flex flex-col gap-3 mt-8">
-                <button id="save-keys-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-colors shadow-sm">
-                    Save Keys & Connect
+                <button id="save-drive-config-btn" class="w-full bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" class="w-5 h-5">
+                    Continue with Google
                 </button>
-                <button onclick="document.getElementById('drive-setup-modal').style.display='none'" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 rounded-lg transition-colors">Cancel</button>
+                <button id="cancel-drive-btn" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 rounded-lg transition-colors">Cancel</button>
             </div>
-        </div>
-    </div>
-
-    <!-- Save As Modal -->
-    <div id="save-as-modal" class="modal-overlay hide-on-print">
-        <div class="modal-content">
-            <h2 class="text-2xl font-bold mb-2 text-themeBlack">Save Script As</h2>
-            <p class="text-gray-600 text-sm mb-6">Choose a name for this project. It will be saved in the <b>dS_Frameworks_Scripts</b> folder in your Google Drive.</p>
-            <input type="text" id="save-filename" value="Opening_Scene_Script" class="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 mb-6 text-black">
-            <div class="flex gap-3">
-                <button onclick="document.getElementById('save-as-modal').style.display='none'" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 rounded-lg">Cancel</button>
-                <button id="confirm-save-btn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg">Save Project</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Load File Modal -->
-    <div id="load-modal" class="modal-overlay hide-on-print">
-        <div class="modal-content">
-            <h2 class="text-2xl font-bold mb-2 text-themeBlack">Load Project</h2>
-            <p class="text-gray-600 text-sm mb-4">Select a script from your Drive folder to load.</p>
-            <div id="file-list-container" class="max-h-64 overflow-y-auto border border-gray-200 rounded-lg mb-4 bg-gray-50">
-                <div class="p-4 text-center text-sm text-gray-500" id="file-list-status">Scanning Drive...</div>
-            </div>
-            <button onclick="document.getElementById('load-modal').style.display='none'" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 rounded-lg">Cancel</button>
         </div>
     </div>
 
     <!-- Settings Modal -->
     <div id="settings-modal" class="modal-overlay hide-on-print">
         <div class="modal-content">
-            <h2 class="text-2xl font-bold mb-6 text-themeBlack"><i class="fa-solid fa-gear"></i> Settings</h2>
-            
-            <div class="mb-6 border-b border-gray-100 pb-6">
-                <label class="block text-sm font-bold text-gray-700 mb-3">Theme Appearance</label>
-                <div class="flex gap-3">
-                    <button id="theme-light-btn" class="flex-1 py-2 px-4 bg-gray-100 text-gray-800 rounded-lg border-2 border-transparent font-semibold">Light</button>
-                    <button id="theme-dark-btn" class="flex-1 py-2 px-4 bg-gray-800 text-white rounded-lg border-2 border-transparent font-semibold">Dark</button>
+            <div class="flex items-start justify-between gap-4 mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold flex items-center gap-2"><i class="fa-solid fa-sliders text-themeRed"></i> Settings</h2>
+                    <p class="text-gray-500 text-sm mt-1">Control editing preferences and cloud save behavior.</p>
                 </div>
+                <button class="close-modal text-gray-400 hover:text-themeRed text-xl" data-close="settings-modal" title="Close"><i class="fa-solid fa-xmark"></i></button>
             </div>
-
-            <div class="mb-6 border-b border-gray-100 pb-6">
-                <label class="block text-sm font-bold text-gray-700 mb-2">Auto-Save Interval</label>
-                <select id="autosave-interval-select" class="w-full border border-gray-300 rounded-lg p-3 text-sm text-black">
-                    <option value="60000">Every 1 Minute</option>
-                    <option value="120000" selected>Every 2 Minutes</option>
-                    <option value="300000">Every 5 Minutes</option>
-                    <option value="0">Off (Manual Save Only)</option>
-                </select>
-            </div>
-            
-            <div class="mb-6">
-                <button id="clear-keys-btn" class="w-full bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 font-bold py-3 rounded-lg transition-colors text-sm">
-                    <i class="fa-solid fa-right-from-bracket mr-2"></i> Clear Saved Keys & Logout
+            <div class="space-y-6">
+                <label class="flex items-center justify-between gap-4 border border-gray-200 rounded-xl p-4">
+                    <span>
+                        <span class="block font-bold">Dark Mode</span>
+                        <span class="block text-xs text-gray-500">Switch the handbook into a black editorial theme.</span>
+                    </span>
+                    <input id="dark-mode-toggle" type="checkbox" class="w-5 h-5 accent-red-600">
+                </label>
+                <div class="border border-gray-200 rounded-xl p-4">
+                    <label for="autosave-select" class="block font-bold mb-1">Auto-Save Interval</label>
+                    <p class="text-xs text-gray-500 mb-3">Applies only after a Drive project is connected.</p>
+                    <select id="autosave-select" class="w-full border border-gray-300 rounded-lg p-3 text-sm bg-white text-gray-900">
+                        <option value="60000">1 min</option>
+                        <option value="120000">2 min</option>
+                        <option value="300000">5 min</option>
+                        <option value="off">Off</option>
+                    </select>
+                </div>
+                <button id="clear-saved-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg transition-colors">
+                    <i class="fa-solid fa-right-from-bracket mr-2"></i> Clear Saved Session & Logout
                 </button>
             </div>
+        </div>
+    </div>
 
-            <button onclick="document.getElementById('settings-modal').style.display='none'" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg">Done</button>
+    <!-- Theme Modal -->
+    <div id="theme-modal" class="modal-overlay hide-on-print">
+        <div class="modal-content">
+            <div class="flex items-start justify-between gap-4 mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold flex items-center gap-2"><i class="fa-solid fa-palette text-themeRed"></i> Change Theme</h2>
+                    <p class="text-gray-500 text-sm mt-1">Tune the three core CSS variables live.</p>
+                </div>
+                <button class="close-modal text-gray-400 hover:text-themeRed text-xl" data-close="theme-modal" title="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between gap-4 border border-gray-200 rounded-xl p-4">
+                    <label class="text-sm font-semibold text-gray-700">Red Accent</label>
+                    <input type="color" id="color-red" value="#E50914" class="w-12 h-10 rounded cursor-pointer border border-gray-300 p-0 outline-none">
+                </div>
+                <div class="flex items-center justify-between gap-4 border border-gray-200 rounded-xl p-4">
+                    <label class="text-sm font-semibold text-gray-700">Black / Ink</label>
+                    <input type="color" id="color-black" value="#111111" class="w-12 h-10 rounded cursor-pointer border border-gray-300 p-0 outline-none">
+                </div>
+                <div class="flex items-center justify-between gap-4 border border-gray-200 rounded-xl p-4">
+                    <label class="text-sm font-semibold text-gray-700">Background</label>
+                    <input type="color" id="color-bg" value="#FFFFFF" class="w-12 h-10 rounded cursor-pointer border border-gray-300 p-0 outline-none">
+                </div>
+                <button id="reset-colors-btn" class="w-full bg-gray-900 hover:bg-black text-white font-bold py-3 rounded-lg transition-colors">Reset to Default</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Print Reminder Modal -->
+    <div id="print-reminder-modal" class="modal-overlay hide-on-print">
+        <div class="modal-content text-center">
+            <i class="fa-solid fa-print text-themeRed text-4xl mb-4"></i>
+            <h2 class="text-2xl font-bold mb-2">Print Reminder</h2>
+            <p class="text-gray-700 font-semibold mb-6">Remove Date & URL! Uncheck 'Headers and footers' in print settings.</p>
+            <div class="flex gap-3">
+                <button class="close-modal flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 rounded-lg" data-close="print-reminder-modal">Cancel</button>
+                <button id="confirm-print-btn" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Drive Load Modal -->
+    <div id="drive-load-modal" class="modal-overlay hide-on-print">
+        <div class="modal-content wide">
+            <div class="flex items-start justify-between gap-4 mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold flex items-center gap-2"><i class="fa-brands fa-google-drive text-blue-500"></i> Load Project</h2>
+                    <p class="text-gray-500 text-sm mt-1">HTML files inside dS_Frameworks_Scripts.</p>
+                </div>
+                <button class="close-modal text-gray-400 hover:text-themeRed text-xl" data-close="drive-load-modal" title="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="drive-file-list" class="space-y-3">
+                <div class="text-sm text-gray-500">Connect to Drive to load projects.</div>
+            </div>
         </div>
     </div>
 
@@ -294,25 +345,26 @@
 
         <!-- Utility Row -->
         <div class="flex gap-2 w-full justify-end">
-            <button id="settings-btn" title="Settings" class="bg-gray-800 hover:bg-gray-900 text-white w-12 h-12 rounded-full shadow-xl transition-all flex items-center justify-center"><i class="fa-solid fa-gear text-lg"></i></button>
-            <button id="load-drive-btn" title="Load from Google Drive" class="bg-amber-500 hover:bg-amber-600 text-white w-12 h-12 rounded-full shadow-xl transition-all flex items-center justify-center"><i class="fa-solid fa-cloud-arrow-down text-lg"></i></button>
-            <button id="save-drive-btn" title="Save to Google Drive" class="bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-full shadow-xl transition-all flex items-center justify-center"><i class="fa-solid fa-cloud-arrow-up text-lg"></i></button>
+            <button id="settings-btn" title="Settings" class="bg-white hover:bg-gray-100 text-gray-900 w-12 h-12 rounded-full shadow-xl transition-all flex items-center justify-center border border-gray-200"><i class="fa-solid fa-gear text-lg"></i></button>
+            <button id="toggle-colors-btn" title="Change Theme Colors" class="bg-gray-800 hover:bg-gray-900 text-white w-12 h-12 rounded-full shadow-xl transition-all flex items-center justify-center"><i class="fa-solid fa-palette text-lg"></i></button>
+            <button id="download-html-btn" title="Download Local HTML File" class="bg-indigo-600 hover:bg-indigo-700 text-white w-12 h-12 rounded-full shadow-xl transition-all flex items-center justify-center"><i class="fa-solid fa-file-code text-lg"></i></button>
+            <button id="drive-save-btn" title="Save to Google Drive" class="bg-blue-500 hover:bg-blue-600 text-white w-12 h-12 rounded-full shadow-xl transition-all flex items-center justify-center"><i class="fa-brands fa-google-drive text-lg"></i></button>
+            <button id="drive-load-btn" title="Load from Google Drive" class="bg-sky-700 hover:bg-sky-800 text-white w-12 h-12 rounded-full shadow-xl transition-all flex items-center justify-center"><i class="fa-solid fa-cloud-arrow-down text-lg"></i></button>
         </div>
 
         <!-- Main Action Buttons -->
         <button id="edit-mode-btn" class="bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 px-6 rounded-full shadow-xl transition-all duration-300 flex items-center justify-center gap-2 w-full">
-            <i class="fa-solid fa-pen-to-square"></i> Edit Document
+            <i class="fa-solid fa-pen-to-square"></i> Edit Script
         </button>
         <button id="print-btn" class="text-white font-semibold py-3 px-6 rounded-full shadow-xl transition-all duration-300 flex items-center justify-center gap-2 w-full hover:brightness-90" style="background-color: var(--theme-red);">
-            <i class="fa-solid fa-file-pdf"></i> Export PDF
+            <i class="fa-solid fa-file-pdf"></i> Save as PDF
         </button>
     </div>
 
-    <!-- MAIN CONTENT CONTAINER (Editable) -->
-    <div class="max-w-4xl mx-auto px-5 sm:px-10 py-12 container bg-boxBg border-borderColor border-x min-h-screen" id="main-content">
+    <div class="max-w-4xl mx-auto px-5 sm:px-10 py-12 container" id="main-content">
 
-        <!-- HERO COVER SECTION -->
-        <header class="mb-16 text-center border-b-[1px] border-borderColor pb-12 pt-8">
+        <!-- 1. HERO COVER SECTION -->
+        <header class="mb-16 text-center border-b-[1px] border-gray-300 pb-12 pt-8">
             <div class="mb-6 inline-block bg-themeBlack text-themeWhite px-4 py-1 rounded-sm text-xs font-bold tracking-[0.3em] uppercase">Masterclass Script</div>
             <h1 class="text-5xl md:text-7xl font-youtube font-bold uppercase text-themeBlack mb-6 leading-none">
                 OPENING SCENE <br/>
@@ -320,18 +372,18 @@
             </h1>
             <p class="text-xl text-gray-500 font-light tracking-wide mb-10 mt-6">"Filmmakers Tumse Ek Baat Chhupa Rahe Hain"</p>
             
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm font-bold text-themeBlack bg-boxBg p-6 rounded-xl border border-borderColor uppercase tracking-wider">
-                <div class="flex flex-col items-center border-r border-borderColor">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm font-bold text-themeBlack bg-gray-50 p-6 rounded-xl border border-gray-200 uppercase tracking-wider">
+                <div class="flex flex-col items-center border-r border-gray-200">
                     <i class="fa-solid fa-building text-themeRed mb-2 text-xl"></i>
                     <span class="text-xs text-gray-400">Channel</span>
                     <span>dS FRAMEWORKS</span>
                 </div>
-                <div class="flex flex-col items-center md:border-r border-borderColor">
+                <div class="flex flex-col items-center md:border-r border-gray-200">
                     <i class="fa-solid fa-microphone-lines text-themeRed mb-2 text-xl"></i>
                     <span class="text-xs text-gray-400">Style</span>
                     <span>95% VO / 5% TH</span>
                 </div>
-                <div class="flex flex-col items-center border-r border-borderColor mt-4 md:mt-0">
+                <div class="flex flex-col items-center border-r border-gray-200 mt-4 md:mt-0">
                     <i class="fa-solid fa-stopwatch text-themeRed mb-2 text-xl"></i>
                     <span class="text-xs text-gray-400">Duration</span>
                     <span>12-14 MINS</span>
@@ -345,8 +397,8 @@
         </header>
 
         <!-- HOOK -->
-        <section class="mb-16">
-            <div class="flex items-center justify-between mb-6 border-b border-borderColor pb-3">
+        <section class="mb-16 tech-box">
+            <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-3">
                 <h2 class="text-2xl font-bold uppercase tracking-widest text-themeBlack flex items-center gap-3">
                     <i class="fa-solid fa-fire text-themeRed"></i> Hook
                 </h2>
@@ -369,377 +421,860 @@
 
             <div class="broll-cues">
                 <h4 class="font-bold text-themeRed text-xs uppercase tracking-widest mb-3"><i class="fa-solid fa-clapperboard mr-2"></i> B-Roll & Visual Cues</h4>
-                <ul class="text-sm text-themeBlack space-y-2 font-mono">
-                    <li><span class="text-gray-500 mr-2">0:00</span> Ocean waves crashing on shore (cinematic aerial)</li>
-                    <li><span class="text-gray-500 mr-2">0:04</span> Lone figure lying on beach (wide, dreamy)</li>
-                    <li><span class="text-gray-500 mr-2">0:10</span> Extreme close-up of closed eyes</li>
-                    <li><span class="text-gray-500 mr-2">0:14</span> Camera pulling back revealing vast empty space</li>
-                    <li><span class="text-gray-500 mr-2">0:20</span> Quick flash montage: different iconic opening shots</li>
-                    <li><span class="text-gray-500 mr-2">0:26</span> Black screen with text appearing: "THE OPENING SCENE"</li>
-                    <li><span class="text-gray-500 mr-2">0:30</span> dS FRAMEWORKS watermark subtle</li>
+                <ul class="text-sm text-gray-700 space-y-2 font-mono">
+                    <li><span class="text-gray-400 mr-2">0:00</span> Ocean waves crashing on shore (cinematic aerial)</li>
+                    <li><span class="text-gray-400 mr-2">0:04</span> Lone figure lying on beach (wide, dreamy)</li>
+                    <li><span class="text-gray-400 mr-2">0:10</span> Extreme close-up of closed eyes</li>
+                    <li><span class="text-gray-400 mr-2">0:14</span> Camera pulling back revealing vast empty space</li>
+                    <li><span class="text-gray-400 mr-2">0:20</span> Quick flash montage: different iconic opening shots</li>
+                    <li><span class="text-gray-400 mr-2">0:26</span> Black screen with text appearing: "THE OPENING SCENE"</li>
+                    <li><span class="text-gray-400 mr-2">0:30</span> dS FRAMEWORKS watermark subtle</li>
                 </ul>
+                <div class="mt-3 pt-3 border-t border-gray-200 text-sm text-gray-600">
+                    <strong><i class="fa-solid fa-volume-high"></i> Sonic:</strong> Single low bass drone. No music yet. Just tension. Wave sounds fading.
+                </div>
             </div>
         </section>
 
         <!-- SETUP - IDENTITY -->
-        <section class="mb-16">
-            <div class="flex items-center justify-between mb-6 border-b border-borderColor pb-3">
+        <section class="mb-16 tech-box">
+            <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-3">
                 <h2 class="text-2xl font-bold uppercase tracking-widest text-themeBlack flex items-center gap-3">
                     <i class="fa-solid fa-fingerprint text-themeRed"></i> Setup - Identity
                 </h2>
                 <span class="text-sm text-gray-400 font-mono">0:30-1:30</span>
             </div>
             
+            <div class="direction-note">
+                <div class="mb-1"><strong><i class="fa-solid fa-microphone"></i> Voice:</strong> Thoughtful, building slowly, narrator tone</div>
+                <div><strong><i class="fa-solid fa-music"></i> Music:</strong> Minimal ambient piano, single notes, breathing space</div>
+            </div>
+
             <p class="vo-text">Har film ka pehla frame ek waada hota hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
-            <p class="vo-text">Woh tumse keh raha hota hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> "Ruko. Jo aane wala hai... woh tumhari soch se zyada hai." <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
-            <p class="vo-text">Opening scene ek MECHANISM hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span> Ek psychological machine... jo viewer ke dimaag mein ek sawaal install karti hai... aur phir uska answer CHHUPA leti hai.</p>
+            <p class="vo-text">Woh tumse keh raha hota hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> "Ruko. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> Jo aane wala hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> woh tumhari soch se zyada hai." <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Lekin yahan ek problem hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+            <p class="vo-text">Zyaadatar log sochte hain ki opening scene matlab... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> ek dramatic shot. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> Ek explosion. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> Ek dialogue. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text font-bold text-themeRed">Nahi. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+            <p class="vo-text">Opening scene ek MECHANISM hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Ek psychological machine... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> jo viewer ke dimaag mein ek sawaal install karti hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> aur phir uska answer CHHUPA leti hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+            <p class="vo-text">Aur jab tak woh answer nahi milta... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> tum woh screen band nahi kar sakte. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Yeh koi magic nahi hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Yeh design hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> Aur aaj main tumhe woh design dikhaunga. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+            <p class="vo-text">Lekin pehle... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> ek fundamental baat samajh lo.</p>
+
+            <div class="broll-cues">
+                <h4 class="font-bold text-themeRed text-xs uppercase tracking-widest mb-3"><i class="fa-solid fa-clapperboard mr-2"></i> B-Roll & Visual Cues</h4>
+                <ul class="text-sm text-gray-700 space-y-2 font-mono">
+                    <li><span class="text-gray-400 mr-2">0:32</span> Film reel spinning slowly (cinematic macro)</li>
+                    <li><span class="text-gray-400 mr-2">0:40</span> Empty cinema seats, light flickering from screen</li>
+                    <li><span class="text-gray-400 mr-2">0:50</span> Close-up of viewer's eyes reflecting screen light</li>
+                    <li><span class="text-gray-400 mr-2">1:00</span> Brain neural pathways animation (subtle, dark)</li>
+                    <li><span class="text-gray-400 mr-2">1:10</span> Lock mechanism turning (visual metaphor for "install")</li>
+                    <li><span class="text-gray-400 mr-2">1:20</span> Filmmaker at edit desk, back to camera, screens glowing</li>
+                </ul>
+                <div class="mt-3 pt-3 border-t border-gray-200 text-sm text-gray-600">
+                    <strong><i class="fa-solid fa-volume-high"></i> Sonic:</strong> Piano notes sparse. Ambient room tone. Breathing space in audio.
+                </div>
+            </div>
+        </section>
+
+        <!-- CORE CONCEPT - THE CHANGE ENGINE -->
+        <section class="mb-16 tech-box">
+            <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-3">
+                <h2 class="text-2xl font-bold uppercase tracking-widest text-themeBlack flex items-center gap-3">
+                    <i class="fa-solid fa-gears text-themeRed"></i> The Change Engine
+                </h2>
+                <span class="text-sm text-gray-400 font-mono">1:30-3:00</span>
+            </div>
+            
+            <div class="direction-note">
+                <div class="mb-1"><strong><i class="fa-solid fa-microphone"></i> Voice:</strong> Teaching mode, but cinematic, controlled pace</div>
+                <div><strong><i class="fa-solid fa-music"></i> Music:</strong> Subtle strings entering, very low, building warmth</div>
+            </div>
+
+            <p class="vo-text">Koi bhi kahani sirf ek cheez pe tikti hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span> <strong>Change.</strong> <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+            <p class="vo-text">Ek insaan tha kuch... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> aur ban gaya kuch aur. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Interstellar mein Cooper ek retired pilot tha... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> jo apne bachcho ke saath khet mein makka uga raha tha. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Film ke end mein? <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Woh time aur space ke paar jaake... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> apni beti ko message bhej raha hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> bookshelf ke peeche se. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+            <p class="vo-text">Yeh change hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Aur opening scene ka kaam hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> yeh change SHURU karna. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Lekin change tabhi feel hota hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> jab tumhe pehle pata ho ki PEHLE kya tha. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+            <p class="vo-text">Isliye har powerful opening ek identity establish karti hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Kaun hai yeh insaan? <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Kya lagta hai duniya ko iske baare mein? <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Aur sabse important... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> yeh insaan khud ko kya samajhta hai? <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+            <p class="vo-text">Phir aata hai conflict... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> woh pressure jo identity ko todta hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Phir choice... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> woh moment jab character decide karta hai ki main badlunga. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Aur phir? <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Change ho jaata hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+            <p class="vo-text font-serif italic text-xl text-themeBlack my-6 text-center border-y border-gray-100 py-4">Identity. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> Conflict. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> Choice. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> Change.</p>
+            <p class="vo-text">Yahi hai har kahani ki rooh. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Lekin opening scene ka asli raaz yeh nahi hai ki tum yeh sab DIKHAO. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+            <p class="vo-text font-bold">Raaz yeh hai ki tum yeh sab CHHUPAO. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Aur sirf itna dikhao... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> ki viewer ka dimaag khud poochhe... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> "Iske aage kya hoga?"</p>
+
+            <div class="broll-cues">
+                <h4 class="font-bold text-themeRed text-xs uppercase tracking-widest mb-3"><i class="fa-solid fa-clapperboard mr-2"></i> B-Roll & Visual Cues</h4>
+                <ul class="text-sm text-gray-700 space-y-2 font-mono">
+                    <li><span class="text-gray-400 mr-2">1:32</span> Cornfield blowing in wind (Interstellar reference feel)</li>
+                    <li><span class="text-gray-400 mr-2">1:40</span> Person sitting alone looking at sky</li>
+                    <li><span class="text-gray-400 mr-2">1:50</span> Close-up of hands holding soil</li>
+                    <li><span class="text-gray-400 mr-2">2:00</span> Space/stars slowly rotating (cinematic)</li>
+                    <li><span class="text-gray-400 mr-2">2:10</span> Bookshelf close-up with light flickering behind</li>
+                    <li><span class="text-gray-400 mr-2">2:20</span> Face close-up: someone making a decision</li>
+                    <li><span class="text-gray-400 mr-2">2:35</span> Text appearing word by word: "IDENTITY → CONFLICT → CHOICE → CHANGE"</li>
+                    <li><span class="text-gray-400 mr-2">2:50</span> Close-up of eye with question mark reflecting</li>
+                </ul>
+                <div class="mt-3 pt-3 border-t border-gray-200 text-sm text-gray-600">
+                    <strong><i class="fa-solid fa-volume-high"></i> Sonic:</strong> Strings building. Interstellar-inspired ambient. Emotional but restrained.
+                </div>
+            </div>
+        </section>
+
+        <!-- TECHNIQUE 1 - THE PLANTED QUESTION -->
+        <section class="mb-16 tech-box">
+            <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-3">
+                <h2 class="text-2xl font-bold text-themeBlack flex items-center"><span class="tech-number text-themeRed text-4xl mr-4">01</span> The Planted Question</h2>
+                <span class="text-sm text-gray-400 font-mono">3:00-5:00</span>
+            </div>
+            
+            <div class="direction-note">
+                <div class="mb-1"><strong><i class="fa-solid fa-microphone"></i> Voice:</strong> Getting more engaged, revealing secrets</div>
+                <div><strong><i class="fa-solid fa-music"></i> Music:</strong> Slightly more presence, rhythmic pulse underneath</div>
+            </div>
+
+            <p class="vo-text">Toh pehli technique. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span> <strong>Planted Question.</strong> <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+            <p class="vo-text">Nolan iska master hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Inception ka opening scene yaad karo. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Ek behosh insaan... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> Japanese castle... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> ek boodha aadmi... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Koi context nahi. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> Koi explanation nahi. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> Sirf confusion. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+            <p class="vo-text">Lekin yeh confusion INTENTIONAL hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span> Nolan ne tumhare dimaag mein ek information gap create kiya hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Tumhe pata hai kuch ho raha hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> tumhe yeh NAHI pata ki kya ho raha hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Aur jab tak yeh gap fill nahi hota... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> tumhara dimaag screen se hat nahi sakta. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+            <p class="vo-text">Yeh ek psychological itch hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> Jaise tumhare haath pe koi jagah khujalti hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> aur tum khujla nahi sakte. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Wahi hota hai dimaag ke saath jab ek sawaal plant ho jaaye... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> aur jawaab mile nahi. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+            
+            <p class="vo-text">Tenet mein Nolan ne yeh aur extreme level pe kiya. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Opera house siege. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> Bullets ulti chal rahi hain. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> Time reverse ho raha hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">First 10 minutes mein tumhe KUCH samajh nahi aata. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span> Lekin tum dekhte rehte ho. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Kyun? <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Kyunki tumhara dimaag DEMAND kar raha hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> "Mujhe samajhna hai yeh kya tha." <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+            <p class="vo-text">Yeh hai planted question ka power. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Tum viewer ko answer mat do. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Sirf sawaal do. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Woh khud rukega. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Lekin ek condition hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span> Sawaal ITNA interesting hona chahiye... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> ki viewer ko FEEL ho ki answer jaanne layak hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> Warna woh screen band kar dega.</p>
+
+            <div class="broll-cues">
+                <h4 class="font-bold text-themeRed text-xs uppercase tracking-widest mb-3"><i class="fa-solid fa-clapperboard mr-2"></i> B-Roll & Visual Cues</h4>
+                <ul class="text-sm text-gray-700 space-y-2 font-mono">
+                    <li><span class="text-gray-400 mr-2">3:02</span> Text: "TECHNIQUE 1 — THE PLANTED QUESTION"</li>
+                    <li><span class="text-gray-400 mr-2">3:05</span> Dark mysterious corridor (Inception feel)</li>
+                    <li><span class="text-gray-400 mr-2">3:12</span> Old man's hands on table (mysterious meeting feel)</li>
+                    <li><span class="text-gray-400 mr-2">3:20</span> Brain scan visual showing curiosity activation</li>
+                    <li><span class="text-gray-400 mr-2">3:30</span> Person scratching arm (itch metaphor, quick)</li>
+                    <li><span class="text-gray-400 mr-2">3:40</span> Opera house exterior (Tenet reference feel)</li>
+                    <li><span class="text-gray-400 mr-2">3:50</span> Bullet in reverse motion (time reverse visual)</li>
+                    <li><span class="text-gray-400 mr-2">4:10</span> Viewer watching screen, leaning forward, hooked</li>
+                    <li><span class="text-gray-400 mr-2">4:30</span> Question mark dissolving into darkness</li>
+                </ul>
+                <div class="mt-3 pt-3 border-t border-gray-200 text-sm text-gray-600">
+                    <strong><i class="fa-solid fa-volume-high"></i> Sonic:</strong> Ticking clock sound subtle underneath. Pulse building. Inception-inspired brass hint.
+                </div>
+            </div>
+        </section>
+
+        <!-- TECHNIQUE 2 - THE MIRROR FRAME -->
+        <section class="mb-16 tech-box">
+            <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-3">
+                <h2 class="text-2xl font-bold text-themeBlack flex items-center"><span class="tech-number text-themeRed text-4xl mr-4">02</span> The Mirror Frame</h2>
+                <span class="text-sm text-gray-400 font-mono">5:00-7:00</span>
+            </div>
+            
+            <div class="direction-note">
+                <div class="mb-1"><strong><i class="fa-solid fa-microphone"></i> Voice:</strong> Deeper, more revealing, building intensity</div>
+                <div><strong><i class="fa-solid fa-music"></i> Music:</strong> Emotional strings, more presence now</div>
+            </div>
+
+            <p class="vo-text">Doosri technique. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span> <strong>The Mirror Frame.</strong> <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+            <p class="vo-text">Yeh tab use hoti hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> jab film character transformation ke baare mein ho. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Concept simple hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span> Film ka pehla frame... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> aur aakhri frame... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> visually almost SAME hota hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+            <p class="vo-text">Lekin emotionally? <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Completely OPPOSITE. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+            
+            <p class="vo-text">Interstellar mein Cooper film ki shuru mein apni beti ke saath hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> aur film ke end mein bhi woh apni beti ke saath hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Same frame. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> Same relationship. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Lekin pehle beti 10 saal ki thi... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> aur ab beti 90 saal ki hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> hospital bed pe... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> marne ke kareeb. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+            <p class="vo-text">Same frame. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Complete emotional destruction. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+            <p class="vo-text">Yeh hai mirror frame ki takat. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Viewer ko directly nahi batana padta ki character badal gaya. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> Tum bas do frames rakh do. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Dimaag khud compare kar lega. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+
+            <p class="vo-text">Shutter Island mein bhi yahi hota hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Film shuru hoti hai Teddy ek boat pe... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> ek confident, sure-of-himself US Marshal. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Film khatam hoti hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> usi insaan ke chehre pe... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> jise ab pata hai ki woh khud hi woh monster tha... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> jise woh dhoondh raha tha. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+            <p class="vo-text">Same face. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> Same eyes. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> Lekin ab un aankhon mein kuch aur hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Yeh opening scene tab kaam karti hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> jab tumhari kahani TRANSFORMATION ke baare mein ho. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Toh apne aap se poochho... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> "Mera character end mein kaun banega?" <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> Aur phir woh OPPOSITE cheez opening mein dikhao. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+            <p class="vo-text">Lekin ek aur technique hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> jo isse bhi zyada dangerous hai.</p>
+
+            <div class="broll-cues">
+                <h4 class="font-bold text-themeRed text-xs uppercase tracking-widest mb-3"><i class="fa-solid fa-clapperboard mr-2"></i> B-Roll & Visual Cues</h4>
+                <ul class="text-sm text-gray-700 space-y-2 font-mono">
+                    <li><span class="text-gray-400 mr-2">5:02</span> Text: "TECHNIQUE 2 — THE MIRROR FRAME"</li>
+                    <li><span class="text-gray-400 mr-2">5:05</span> Mirror reflection shot (visual metaphor)</li>
+                    <li><span class="text-gray-400 mr-2">5:10</span> Father and young daughter holding hands</li>
+                    <li><span class="text-gray-400 mr-2">5:20</span> Same father, now alone, aged, looking at photo</li>
+                    <li><span class="text-gray-400 mr-2">5:30</span> Hospital bed scene, old person's hand</li>
+                    <li><span class="text-gray-400 mr-2">5:40</span> Split screen: beginning frame vs ending frame</li>
+                    <li><span class="text-gray-400 mr-2">5:50</span> Boat on misty water (Shutter Island feel)</li>
+                    <li><span class="text-gray-400 mr-2">6:00</span> Face extreme close-up: eyes showing realization</li>
+                    <li><span class="text-gray-400 mr-2">6:20</span> Two identical frames side by side, subtle differences</li>
+                </ul>
+                <div class="mt-3 pt-3 border-t border-gray-200 text-sm text-gray-600">
+                    <strong><i class="fa-solid fa-volume-high"></i> Sonic:</strong> Emotional strings swell. Hans Zimmer-inspired single note. Heartbeat underneath.
+                </div>
+            </div>
+        </section>
+
+        <!-- TECHNIQUE 3 - THE DELIBERATE MISDIRECT -->
+        <section class="mb-16 tech-box">
+            <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-3">
+                <h2 class="text-2xl font-bold text-themeBlack flex items-center"><span class="tech-number text-themeRed text-4xl mr-4">03</span> The Deliberate Misdirect</h2>
+                <span class="text-sm text-gray-400 font-mono">7:00-8:45</span>
+            </div>
+            
+            <div class="direction-note">
+                <div class="mb-1"><strong><i class="fa-solid fa-microphone"></i> Voice:</strong> Playful edge, conspiratorial, like sharing a secret</div>
+                <div><strong><i class="fa-solid fa-music"></i> Music:</strong> Slightly mysterious, noir undertone</div>
+            </div>
+
+            <p class="vo-text">Teesri technique. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span> <strong>The Deliberate Misdirect.</strong> <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+            <p class="vo-text">Yeh woh technique hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> jahan filmmaker tumhe JAAN-BOOJH KE galat direction mein le jaata hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Tum poori film ek cheez sochte rehte ho... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> aur end mein pata chalta hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> ki tumse jhooth bola gaya tha. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+            
+            <p class="vo-text">Shutter Island iska perfect example hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Opening mein Teddy ek investigator hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Missing patient case solve karne aaya hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Tum poori film uska saath dete ho. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> Uski side lete ho. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> Uske saath clues dhundhte ho. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Aur phir last 20 minutes mein... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> tumhari poori reality palatti hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span></p>
+            <p class="vo-text">Teddy patient nahi dhoondh raha tha. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> Teddy KHUD patient tha. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+            <p class="vo-text">Ab socho... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> agar Scorsese ne opening scene mein hi hint de diya hota... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> ki kuch gadbad hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> toh film ka climax utna devastating nahi hota. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Isliye opening scene ne tumhe DELIBERATELY galat track pe rakha. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Tumne ek reality accept kar li... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> aur jab woh reality toot gayi... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> tum hilte rehte ho. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+
+            <p class="vo-text">Parasite mein Bong Joon-ho ne yeh alag level pe kiya. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Opening scene mein ek gareeb parivaar hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> WiFi dhoondh rahe hain... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> pizza boxes fold kar rahe hain. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Tum sochte ho yeh ek underdog story hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Rags to riches. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Lekin Bong Joon-ho tumhe aisi jagah le jaata hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> jahan underdog bhi villain ban jaata hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> aur villain bhi victim. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+            <p class="vo-text">Opening scene ka misdirect ITNA perfect tha... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> ki jab reality samne aayi... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> tumhe apne aap pe bhi shaq hua. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Yeh hai misdirect ki takat. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Viewer ko ek comfortable assumption de do. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Phir woh assumption todh do. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Jitna comfortable assumption... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> utna devastating reveal.</p>
+
+            <div class="broll-cues">
+                <h4 class="font-bold text-themeRed text-xs uppercase tracking-widest mb-3"><i class="fa-solid fa-clapperboard mr-2"></i> B-Roll & Visual Cues</h4>
+                <ul class="text-sm text-gray-700 space-y-2 font-mono">
+                    <li><span class="text-gray-400 mr-2">7:02</span> Text: "TECHNIQUE 3 — THE DELIBERATE MISDIRECT"</li>
+                    <li><span class="text-gray-400 mr-2">7:05</span> Foggy lighthouse (Shutter Island atmosphere)</li>
+                    <li><span class="text-gray-400 mr-2">7:15</span> Detective looking at case files</li>
+                    <li><span class="text-gray-400 mr-2">7:25</span> Mirror cracking (metaphor for reality breaking)</li>
+                    <li><span class="text-gray-400 mr-2">7:35</span> Person's face shifting from confident to horrified</li>
+                    <li><span class="text-gray-400 mr-2">7:45</span> Semi-basement window with feet walking past (Parasite feel)</li>
+                    <li><span class="text-gray-400 mr-2">7:55</span> Pizza box folding, hands working</li>
+                    <li><span class="text-gray-400 mr-2">8:10</span> Staircase going down into darkness</li>
+                    <li><span class="text-gray-400 mr-2">8:25</span> Mask being removed from face (metaphor)</li>
+                </ul>
+                <div class="mt-3 pt-3 border-t border-gray-200 text-sm text-gray-600">
+                    <strong><i class="fa-solid fa-volume-high"></i> Sonic:</strong> Noir jazz undertone. Suspense building. Sharp cut to silence at "KHUD patient tha."
+                </div>
+            </div>
+        </section>
+
+        <!-- TECHNIQUE 4 - PROJECT HAIL MARY DEEP DIVE -->
+        <section class="mb-16 tech-box">
+            <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-3">
+                <h2 class="text-2xl font-bold text-themeBlack flex items-center"><span class="tech-number text-themeRed text-4xl mr-4">04</span> Project Hail Mary Deep Dive</h2>
+                <span class="text-sm text-gray-400 font-mono">8:45-10:30</span>
+            </div>
+            
+            <div class="direction-note">
+                <div class="mb-1"><strong><i class="fa-solid fa-microphone"></i> Voice:</strong> Passionate, building to emotional peak, this is the climax</div>
+                <div><strong><i class="fa-solid fa-music"></i> Music:</strong> Full emotional score now, cinematic, powerful</div>
+            </div>
+
+            <p class="vo-text">Ab main tumhe ek aisi opening dikhata hoon... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> jo in TEENO techniques ko ek saath use karti hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+            <p class="vo-text font-bold text-xl">Project Hail Mary.</p>
+            <p class="vo-text">Andy Weir ki book. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> The Martian waale Andy Weir. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Kahani shuru hoti hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> ek insaan ke saath... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> jo ek room mein uthta hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Usse nahi pata woh kaun hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Kahan hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Kaise yahan pahuncha. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Baaju mein do dead bodies hain. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s - let it sink</span></p>
+            <p class="vo-text">Ab socho kya ho raha hai tumhare dimaag mein is waqt. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            
+            <ul class="space-y-2 mb-4 font-serif text-lg text-gray-800 ml-4">
+                <li>• Planted question? <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> <strong class="text-green-600">CHECK.</strong> <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> "Yeh insaan kaun hai?"</li>
+                <li>• Information gap? <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> <strong class="text-green-600">CHECK.</strong> <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> "Dead bodies kyun hain?"</li>
+                <li>• Misdirect? <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> <strong class="text-green-600">CHECK.</strong> <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> "Kya yeh ek murder mystery hai?"</li>
+            </ul>
+
+            <p class="vo-text text-themeRed font-bold">Nahi. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s - dramatic</span></p>
+            <p class="vo-text">Yeh ek spaceship hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> Woh insaan Earth ka LAST HOPE hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Aur usse yaad bhi nahi hai ki usse yahan kyun bheja gaya. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+            <p class="vo-text">Andy Weir ne ek hi opening mein... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> identity CHHUPA di. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Conflict PLANT kar diya. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Aur ek aisi curiosity create ki... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> ki tum 400 pages bina ruke padh jaate ho. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+            <p class="vo-text">Lekin sabse khoobsurat cheez yeh hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Jab protagonist ko dheere dheere apni memory wapas aati hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> toh uske saath TUMHE bhi apne sawaalon ke jawaab milte hain. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Tum uske saath DISCOVER kar rahe ho. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> Woh akela nahi hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> TUM uske saath ho. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+            <p class="vo-text">Yeh hai opening scene ka ultimate goal. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Viewer ko PARTNER banana kahani mein. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Na sirf dekhne wala... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> balki saath chalne wala. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+            <p class="vo-text">Aur yeh tab hota hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> jab tum viewer ke dimaag mein woh EXACT sawaal plant kar do... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> jinka jawaab DHUNDHNE ke liye woh apna time invest kare.</p>
+
+            <div class="broll-cues">
+                <h4 class="font-bold text-themeRed text-xs uppercase tracking-widest mb-3"><i class="fa-solid fa-clapperboard mr-2"></i> B-Roll & Visual Cues</h4>
+                <ul class="text-sm text-gray-700 space-y-2 font-mono">
+                    <li><span class="text-gray-400 mr-2">8:47</span> Text: "TECHNIQUE 4 — THE TRIPLE LOCK (Project Hail Mary)"</li>
+                    <li><span class="text-gray-400 mr-2">8:50</span> Dark room, single light, person waking up confused</li>
+                    <li><span class="text-gray-400 mr-2">9:00</span> Two covered bodies in dim light</li>
+                    <li><span class="text-gray-400 mr-2">9:10</span> Checklist appearing: "Planted Question ✓ / Information Gap ✓ / Misdirect ✓"</li>
+                    <li><span class="text-gray-400 mr-2">9:20</span> Spaceship interior reveal (wide, cinematic)</li>
+                    <li><span class="text-gray-400 mr-2">9:30</span> Earth from space, slowly getting smaller</li>
+                    <li><span class="text-gray-400 mr-2">9:40</span> Memory fragments montage (quick flashes)</li>
+                    <li><span class="text-gray-400 mr-2">9:50</span> Two hands reaching toward each other (partnership metaphor)</li>
+                    <li><span class="text-gray-400 mr-2">10:10</span> Brain with question marks dissolving into answers</li>
+                    <li><span class="text-gray-400 mr-2">10:20</span> Book cover of Project Hail Mary (subtle, quick)</li>
+                </ul>
+                <div class="mt-3 pt-3 border-t border-gray-200 text-sm text-gray-600">
+                    <strong><i class="fa-solid fa-volume-high"></i> Sonic:</strong> Full emotional score. Interstellar-level strings. Heartbeat rhythm. Peak emotional moment of video.
+                </div>
+            </div>
+        </section>
+
+        <!-- ENGAGEMENT BREAK / CTA -->
+        <section class="mb-16">
+            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">(10:30-10:50) ENGAGEMENT BREAK</h3>
+            <div class="direction-note mb-4">
+                <div class="mb-1"><strong><i class="fa-solid fa-microphone"></i> Voice:</strong> Slightly lighter, direct, genuine</div>
+            </div>
+
+            <div class="th-block">
+                <p class="mb-4"><i class="fa-solid fa-video"></i> <strong>[TH]</strong> Agar tumhe is video se kuch naya samajh aa raha hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> toh ek like kar do. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+                <p class="mb-4"><i class="fa-solid fa-video"></i> <strong>[TH]</strong> Aur agar tum filmmaking ko seriously samajhna chahte ho... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> toh dS FRAMEWORKS ko subscribe kar lo. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+                <p class="mb-4"><i class="fa-solid fa-video"></i> <strong>[TH]</strong> Kyunki aisi analysis aur kahin nahi milegi. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span></p>
+                <p><i class="fa-solid fa-video"></i> <strong>[TH]</strong> Chalo aage chalte hain.</p>
+            </div>
+        </section>
+
+        <!-- DEEPER INSIGHT - WHY IT WORKS -->
+        <section class="mb-16 tech-box">
+            <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-3">
+                <h2 class="text-2xl font-bold uppercase tracking-widest text-themeBlack flex items-center gap-3">
+                    <i class="fa-solid fa-magnifying-glass text-themeRed"></i> Deeper Insight - Why It Works
+                </h2>
+                <span class="text-sm text-gray-400 font-mono">10:50-12:30</span>
+            </div>
+            
+            <div class="direction-note">
+                <div class="mb-1"><strong><i class="fa-solid fa-microphone"></i> Voice:</strong> Philosophical, premium narrator mode</div>
+                <div><strong><i class="fa-solid fa-music"></i> Music:</strong> Minimal again, reflective, breathing space</div>
+            </div>
+
+            <p class="vo-text">Ab ek important sawaal. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Yeh sab kaam kyun karta hai? <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+            <p class="vo-text">Jawab hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> humara dimaag INCOMPLETE patterns bardaasht nahi kar sakta. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Neuroscience mein ise kehte hain... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> <strong>Zeigarnik Effect.</strong> <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+            <p class="vo-text">Jab koi cheez adhoori hoti hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> humara dimaag usse COMPLETE karne ke liye pagal ho jaata hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Isliye tum woh TV show khatam karte ho... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> jo tumhe pasand bhi nahi hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Kyunki adhoori kahani KHATK'TI hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+            <p class="vo-text">Opening scene jo yeh karta hai woh actually... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> tumhare dimaag mein ek UNRESOLVED LOOP install karta hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Aur jab tak woh loop close nahi hota... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> tum release nahi feel karte. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text">Inception mein woh spinning top. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Ruka ya nahi? <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> Woh loop AAJ TAK open hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+            <p class="vo-text">Aur isliye log AAJ BHI us film ke baare mein baat karte hain. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+            <p class="vo-text">Best filmmakers woh nahi hain jo achhi kahani sunaate hain. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+            <p class="vo-text">Best filmmakers woh hain... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> jo tumhare dimaag mein ek khujli daal dete hain... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> aur phir DECIDE karte hain... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> ki khujli mitaani hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> ya nahi. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+            <p class="vo-text">Nolan usually nahi mitaata. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> Isliye uski filmein haunt karti hain.</p>
+
+            <div class="broll-cues">
+                <h4 class="font-bold text-themeRed text-xs uppercase tracking-widest mb-3"><i class="fa-solid fa-clapperboard mr-2"></i> B-Roll & Visual Cues</h4>
+                <ul class="text-sm text-gray-700 space-y-2 font-mono">
+                    <li><span class="text-gray-400 mr-2">10:52</span> Brain neural network visualization</li>
+                    <li><span class="text-gray-400 mr-2">11:00</span> Text: "ZEIGARNIK EFFECT" appearing and dissolving</li>
+                    <li><span class="text-gray-400 mr-2">11:10</span> Person watching TV, unable to stop, leaning forward</li>
+                    <li><span class="text-gray-400 mr-2">11:20</span> Loop animation: circle that doesn't close</li>
+                    <li><span class="text-gray-400 mr-2">11:30</span> Spinning top on table (wide shot, we don't see if it stops)</li>
+                    <li><span class="text-gray-400 mr-2">11:40</span> Calendar pages flying: years passing, people still discussing</li>
+                    <li><span class="text-gray-400 mr-2">12:00</span> Nolan's silhouette behind camera</li>
+                    <li><span class="text-gray-400 mr-2">12:10</span> Dark corridor, door slightly open, light leaking through</li>
+                </ul>
+                <div class="mt-3 pt-3 border-t border-gray-200 text-sm text-gray-600">
+                    <strong><i class="fa-solid fa-volume-high"></i> Sonic:</strong> Minimal piano. Single sustained note. Space and silence between thoughts.
+                </div>
+            </div>
+        </section>
+
+        <!-- ENDING - STRONG TAKEAWAY + OPEN LOOP -->
+        <section class="mt-16 pt-12 border-t border-gray-300 manifesto pb-12">
+            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6 text-center">(12:30-13:15) THE CLOSING</h3>
+            
+            <div class="direction-note max-w-2xl mx-auto mb-8">
+                <div class="mb-1"><strong><i class="fa-solid fa-microphone"></i> Voice:</strong> Slow, powerful, final authority</div>
+                <div><strong><i class="fa-solid fa-music"></i> Music:</strong> Resolving, emotional, closing</div>
+            </div>
+
+            <div class="th-block">
+                <p class="mb-4"><i class="fa-solid fa-video"></i> <strong>[TH]</strong> Toh agle baar jab tum koi film dekho... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> ya koi kahani likho... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> ya apna next video plan karo... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+                
+                <p class="mb-4"><i class="fa-solid fa-video"></i> <strong>[TH]</strong> Apne aap se ek sawaal poochho. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+                
+                <p class="mb-6 text-2xl text-center font-bold italic my-8">"Main apne viewer ke dimaag mein KAUN SA sawaal plant kar raha hoon?" <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.8s</span></p>
+                
+                <p class="mb-4"><i class="fa-solid fa-video"></i> <strong>[TH]</strong> Agar tumhare paas woh sawaal hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> toh tumhare paas opening scene hai. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+                
+                <p class="mb-4"><i class="fa-solid fa-video"></i> <strong>[TH]</strong> Agar nahi hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> toh tum sirf ek video bana rahe ho. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span></p>
+                
+                <p class="mb-4 text-xl font-bold text-themeRed"><i class="fa-solid fa-video"></i> <strong>[TH]</strong> Film nahi. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 1.0s - final pause</span></p>
+            </div>
+
+            <p class="vo-text mt-10"><strong>[BROLL]</strong> Waise... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> ek technique aur hai jo main aaj NAHI bataunga. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.7s</span></p>
+            <p class="vo-text"><strong>[BROLL]</strong> Woh technique Nolan ne sirf EK film mein use ki hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span> aur woh film hai Memento. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+            <p class="vo-text"><strong>[BROLL]</strong> Woh technique itni powerful hai... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span> ki uske baare mein mujhe poori ek alag video banana padegi. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.6s</span></p>
+
+            <div class="th-block mt-8">
+                <p class="mb-4"><i class="fa-solid fa-video"></i> <strong>[TH]</strong> Toh subscribe karo... <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.3s</span> warna miss ho jayegi. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.5s</span></p>
+                <p class="mb-4"><i class="fa-solid fa-video"></i> <strong>[TH]</strong> Keep creating. <span class="pause-badge"><i class="fa-solid fa-stopwatch"></i> 0.4s</span></p>
+                <p><i class="fa-solid fa-video"></i> <strong class="text-themeRed tracking-widest uppercase">dS FRAMEWORKS.</strong></p>
+            </div>
+
+            <div class="broll-cues">
+                <h4 class="font-bold text-themeRed text-xs uppercase tracking-widest mb-3"><i class="fa-solid fa-clapperboard mr-2"></i> Final B-Roll & Visual Cues</h4>
+                <ul class="text-sm text-gray-700 space-y-2 font-mono">
+                    <li><span class="text-gray-400 mr-2">12:32</span> Person sitting at edit desk, pausing, thinking</li>
+                    <li><span class="text-gray-400 mr-2">12:40</span> Blank screenplay page, cursor blinking</li>
+                    <li><span class="text-gray-400 mr-2">12:50</span> Camera slowly dollying out from subject</li>
+                    <li><span class="text-gray-400 mr-2">13:00</span> Quick flash: Memento Polaroid photo developing</li>
+                    <li><span class="text-gray-400 mr-2">13:05</span> Black screen, text: "Keep Creating."</li>
+                    <li><span class="text-gray-400 mr-2">13:10</span> dS FRAMEWORKS logo, clean fade</li>
+                </ul>
+                <div class="mt-3 pt-3 border-t border-gray-200 text-sm text-gray-600">
+                    <strong><i class="fa-solid fa-volume-high"></i> Sonic:</strong> Final piano chord resolving. Silence. Clean ending. No music overhang.
+                </div>
+            </div>
         </section>
 
         <!-- FOOTER -->
-        <div class="mt-10 text-center border-t border-borderColor pt-6">
+        <div class="mt-10 text-center border-t border-gray-300 pt-6">
             <p class="text-themeRed text-xs font-bold tracking-[0.3em] uppercase mb-1">END OF SCRIPT</p>
             <p class="text-gray-500 text-xs uppercase tracking-wider">dS FRAMEWORKS</p>
         </div>
 
     </div>
 
-    <!-- UI Interaction & System Logic -->
+    <!-- UI Interaction & Google Drive Scripts -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const editBtn = document.getElementById('edit-mode-btn');
+            const GOOGLE_DRIVE_CONFIG = {
+                // Paste your Google Cloud OAuth Client ID and API Key here.
+                // Example Client ID: "1234567890-abcxyz.apps.googleusercontent.com"
+                clientId: '1060265402154-lb4og3lg60b9egat5mnmdm8vau5m76de.apps.googleusercontent.com',
+                apiKey: 'AIzaSyCJP2qngYNJ6gMrZOa6N-ADbwAfUHox-tU'
+            };
+
+            const root = document.documentElement;
             const mainContainer = document.getElementById('main-content');
-            
-            // Edit Mode
+            const editBtn = document.getElementById('edit-mode-btn');
+            const settingsModal = document.getElementById('settings-modal');
+            const themeModal = document.getElementById('theme-modal');
+            const printModal = document.getElementById('print-reminder-modal');
+            const driveModal = document.getElementById('drive-setup-modal');
+            const loadModal = document.getElementById('drive-load-modal');
+            const saveStatusText = document.getElementById('save-status-text');
+            const saveStatusBox = document.getElementById('save-status');
+            const fileList = document.getElementById('drive-file-list');
+
+            const STORAGE = {
+                fileId: 'ds_script_drive_file_id',
+                fileName: 'ds_script_drive_file_name',
+                autosave: 'ds_script_autosave_interval',
+                dark: 'ds_script_dark_mode',
+                colors: 'ds_script_theme_colors',
+                token: 'ds_script_google_access_token',
+                tokenExpiry: 'ds_script_google_token_expiry',
+                consent: 'ds_script_google_consent_granted'
+            };
+
             let isEditing = false;
+            let tokenClient = null;
+            let accessToken = localStorage.getItem(STORAGE.token) || null;
+            let tokenExpiry = Number(localStorage.getItem(STORAGE.tokenExpiry) || 0);
+            let driveClientId = GOOGLE_DRIVE_CONFIG.clientId.trim();
+            let driveApiKey = GOOGLE_DRIVE_CONFIG.apiKey.trim();
+            let savedDriveFileId = localStorage.getItem(STORAGE.fileId) || null;
+            let savedDriveFileName = localStorage.getItem(STORAGE.fileName) || '';
+            let driveFolderId = null;
+            let pendingDriveAction = null;
+            let autoSaveTimer = null;
+
+            function showModal(id) {
+                document.getElementById(id).style.display = 'flex';
+            }
+
+            function hideModal(id) {
+                document.getElementById(id).style.display = 'none';
+            }
+
+            function updateStatus(text, isError = false, sticky = false) {
+                saveStatusText.textContent = text;
+                saveStatusBox.style.opacity = '1';
+                saveStatusBox.style.color = isError ? '#E50914' : '#4b5563';
+                if (!sticky) setTimeout(() => { saveStatusBox.style.opacity = '0'; }, 3500);
+            }
+
+            function hasUsableToken() {
+                return Boolean(accessToken && tokenExpiry && Date.now() < tokenExpiry);
+            }
+
+            function cacheToken(tokenResponse) {
+                accessToken = tokenResponse.access_token;
+                tokenExpiry = Date.now() + ((tokenResponse.expires_in || 3600) * 1000) - 60000;
+                localStorage.setItem(STORAGE.token, accessToken);
+                localStorage.setItem(STORAGE.tokenExpiry, String(tokenExpiry));
+                localStorage.setItem(STORAGE.consent, 'true');
+                gapi.client.setToken({ access_token: accessToken });
+            }
+
+            function applyThemeColors(colors) {
+                root.style.setProperty('--theme-red', colors.red);
+                root.style.setProperty('--theme-black', colors.black);
+                root.style.setProperty('--theme-bg', colors.bg);
+                root.style.setProperty('--bg-color', colors.bg);
+                document.getElementById('color-red').value = colors.red;
+                document.getElementById('color-black').value = colors.black;
+                document.getElementById('color-bg').value = colors.bg;
+            }
+
+            function persistThemeColors() {
+                const colors = {
+                    red: document.getElementById('color-red').value,
+                    black: document.getElementById('color-black').value,
+                    bg: document.getElementById('color-bg').value
+                };
+                localStorage.setItem(STORAGE.colors, JSON.stringify(colors));
+                applyThemeColors(colors);
+            }
+
+            const savedColors = JSON.parse(localStorage.getItem(STORAGE.colors) || 'null');
+            applyThemeColors(savedColors || { red: '#E50914', black: '#111111', bg: '#FFFFFF' });
+
+            document.getElementById('dark-mode-toggle').checked = localStorage.getItem(STORAGE.dark) === 'true';
+            document.body.classList.toggle('dark-mode', document.getElementById('dark-mode-toggle').checked);
+            document.getElementById('autosave-select').value = localStorage.getItem(STORAGE.autosave) || '120000';
+
+            document.querySelectorAll('.close-modal').forEach(btn => {
+                btn.addEventListener('click', () => hideModal(btn.dataset.close));
+            });
+
+            document.getElementById('settings-btn').addEventListener('click', () => showModal('settings-modal'));
+            document.getElementById('toggle-colors-btn').addEventListener('click', () => showModal('theme-modal'));
+            document.getElementById('cancel-drive-btn').addEventListener('click', () => hideModal('drive-setup-modal'));
+
+            document.getElementById('dark-mode-toggle').addEventListener('change', (event) => {
+                document.body.classList.toggle('dark-mode', event.target.checked);
+                localStorage.setItem(STORAGE.dark, String(event.target.checked));
+            });
+
+            document.getElementById('autosave-select').addEventListener('change', (event) => {
+                localStorage.setItem(STORAGE.autosave, event.target.value);
+                configureAutoSave();
+                updateStatus(event.target.value === 'off' ? 'Auto-save off' : 'Auto-save updated');
+            });
+
+            ['color-red', 'color-black', 'color-bg'].forEach(id => {
+                document.getElementById(id).addEventListener('input', persistThemeColors);
+            });
+
+            document.getElementById('reset-colors-btn').addEventListener('click', () => {
+                localStorage.removeItem(STORAGE.colors);
+                applyThemeColors({ red: '#E50914', black: '#111111', bg: '#FFFFFF' });
+                updateStatus('Theme reset');
+            });
+
+            document.getElementById('clear-saved-btn').addEventListener('click', () => {
+                Object.values(STORAGE).forEach(key => localStorage.removeItem(key));
+                accessToken = null;
+                tokenExpiry = 0;
+                savedDriveFileId = null;
+                savedDriveFileName = '';
+                if (gapi && gapi.client) gapi.client.setToken(null);
+                configureAutoSave();
+                updateStatus('Session cleared. Sign in again.', false, true);
+                hideModal('settings-modal');
+            });
+
             editBtn.addEventListener('click', () => {
                 isEditing = !isEditing;
-                if(isEditing) {
-                    mainContainer.setAttribute('contenteditable', 'true');
+                mainContainer.setAttribute('contenteditable', String(isEditing));
+                if (isEditing) {
                     editBtn.innerHTML = '<i class="fa-solid fa-check"></i> Finish Editing';
                     editBtn.classList.replace('bg-gray-800', 'bg-green-600');
                     editBtn.classList.replace('hover:bg-gray-900', 'hover:bg-green-700');
                 } else {
-                    mainContainer.setAttribute('contenteditable', 'false');
-                    editBtn.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit Document';
+                    editBtn.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit Script';
                     editBtn.classList.replace('bg-green-600', 'bg-gray-800');
                     editBtn.classList.replace('hover:bg-green-700', 'hover:bg-gray-900');
                 }
             });
 
-            // Theme Settings
-            const settingsBtn = document.getElementById('settings-btn');
-            const settingsModal = document.getElementById('settings-modal');
-            const themeLightBtn = document.getElementById('theme-light-btn');
-            const themeDarkBtn = document.getElementById('theme-dark-btn');
-            const body = document.body;
-
-            settingsBtn.addEventListener('click', () => settingsModal.style.display = 'flex');
-
-            themeLightBtn.addEventListener('click', () => {
-                body.classList.remove('dark-mode');
-                themeLightBtn.classList.add('border-blue-500');
-                themeDarkBtn.classList.remove('border-blue-500');
+            document.getElementById('print-btn').addEventListener('click', () => showModal('print-reminder-modal'));
+            document.getElementById('confirm-print-btn').addEventListener('click', () => {
+                hideModal('print-reminder-modal');
+                window.print();
             });
 
-            themeDarkBtn.addEventListener('click', () => {
-                body.classList.add('dark-mode');
-                themeDarkBtn.classList.add('border-blue-500');
-                themeLightBtn.classList.remove('border-blue-500');
+            document.getElementById('download-html-btn').addEventListener('click', () => {
+                const wasEditing = mainContainer.getAttribute('contenteditable') === 'true';
+                if (wasEditing) mainContainer.setAttribute('contenteditable', 'false');
+                const blob = new Blob(['<!DOCTYPE html>\n' + document.documentElement.outerHTML], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = savedDriveFileName || 'ds_frameworks_opening_scene_script.html';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(url);
+                if (wasEditing) mainContainer.setAttribute('contenteditable', 'true');
+                updateStatus('Local HTML downloaded');
             });
 
-            // Print Logic
-            document.getElementById('print-btn').addEventListener('click', () => window.print());
+            document.getElementById('drive-save-btn').addEventListener('click', () => ensureDriveReady(() => uploadToDrive(false)));
+            document.getElementById('drive-load-btn').addEventListener('click', () => ensureDriveReady(loadDriveProjects));
 
-            // ==========================================
-            // GOOGLE DRIVE API INTEGRATION (WITH COOKIE/LOCAL STORAGE)
-            // ==========================================
-            const driveSaveBtn = document.getElementById('save-drive-btn');
-            const driveLoadBtn = document.getElementById('load-drive-btn');
-            
-            const driveModal = document.getElementById('drive-setup-modal');
-            const saveAsModal = document.getElementById('save-as-modal');
-            const loadModal = document.getElementById('load-modal');
-            
-            const saveKeysBtn = document.getElementById('save-keys-btn');
-            const confirmSaveBtn = document.getElementById('confirm-save-btn');
-            const clearKeysBtn = document.getElementById('clear-keys-btn');
-            
-            const fileListContainer = document.getElementById('file-list-container');
-            const autosaveSelect = document.getElementById('autosave-interval-select');
-            
-            const saveStatusText = document.getElementById('save-status-text');
-            const saveStatusBox = document.getElementById('save-status');
-            
-            // Core Storage Variables
-            let driveClientId = localStorage.getItem('gdrive_clientId') || '';
-            let driveApiKey = localStorage.getItem('gdrive_apiKey') || '';
-            let accessToken = null;
-            let tokenExpiry = null;
-            let tokenClient;
-            let mainFolderId = localStorage.getItem('gdrive_mainFolderId') || null;
-            let currentFileId = null; 
-            let autoSaveIntervalId = null;
-            let pendingAction = null;
-
-            const FOLDER_NAME = 'dS_Frameworks_Scripts';
-
-            const updateStatus = (text, isError = false) => {
-                saveStatusText.textContent = text;
-                saveStatusBox.style.opacity = '1';
-                saveStatusBox.style.color = isError ? '#E50914' : '#4b5563';
-                setTimeout(() => { saveStatusBox.style.opacity = '0'; }, 3000);
-            };
-
-            // Check if existing token is valid
-            const storedTokenStr = localStorage.getItem('gdrive_token');
-            if (storedTokenStr) {
-                const tokenData = JSON.parse(storedTokenStr);
-                if (Date.now() < tokenData.expiry) {
-                    accessToken = tokenData.access_token;
-                    tokenExpiry = tokenData.expiry;
-                }
-            }
-
-            // Initialize Google API Clients quietly in background
-            function initGoogleClients() {
-                if(!driveClientId || !driveApiKey) return;
-                
-                gapi.load('client', () => {
-                    gapi.client.init({
-                        apiKey: driveApiKey,
-                        discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
-                    }).catch(e => console.error('GAPI Init Error', e));
-                });
-
-                tokenClient = google.accounts.oauth2.initTokenClient({
-                    client_id: driveClientId,
-                    scope: 'https://www.googleapis.com/auth/drive.file',
-                    callback: async (res) => {
-                        if (res.error) { updateStatus('Auth Cancelled', true); return; }
-                        
-                        accessToken = res.access_token;
-                        tokenExpiry = Date.now() + (res.expires_in * 1000);
-                        res.expiry = tokenExpiry;
-                        localStorage.setItem('gdrive_token', JSON.stringify(res));
-                        
-                        updateStatus('Connected!');
-                        if(!mainFolderId) await getOrCreateFolder();
-                        manageAutoSave();
-
-                        // Execute pending action (Save or Load)
-                        if (pendingAction) {
-                            pendingAction();
-                            pendingAction = null;
-                        }
-                    }
-                });
-            }
-
-            // Call immediately if keys are already saved
-            if (driveClientId && driveApiKey) {
-                initGoogleClients();
-            }
-
-            // Core Function: Request Auth if needed, then execute callback
-            const requireAuthAndExecute = (callback) => {
-                // If Token is valid, execute immediately
-                if (accessToken && tokenExpiry && Date.now() < tokenExpiry) {
-                    if (!mainFolderId) {
-                        getOrCreateFolder().then(callback);
-                    } else {
-                        callback();
-                    }
+            document.getElementById('save-drive-config-btn').addEventListener('click', () => {
+                if (!driveClientId || !driveApiKey) {
+                    document.getElementById('drive-config-warning').classList.remove('hidden');
+                    updateStatus('Add Client ID and API key in code', true);
                     return;
                 }
-                
-                // Keep callback in memory
-                pendingAction = callback;
+                hideModal('drive-setup-modal');
+                initDriveClient().then(requestToken).catch(() => updateStatus('Drive setup failed', true));
+            });
 
-                // If Keys are missing, show setup modal
+            function ensureDriveReady(action) {
+                pendingDriveAction = action;
                 if (!driveClientId || !driveApiKey) {
-                    driveModal.style.display = 'flex';
-                } else {
-                    // Keys exist but token expired/missing -> Show Google Login Popup directly!
-                    if(!tokenClient) initGoogleClients();
-                    tokenClient.requestAccessToken({prompt: ''}); 
+                    document.getElementById('drive-config-warning').classList.remove('hidden');
+                    showModal('drive-setup-modal');
+                    return;
                 }
-            };
-
-            // Buttons that require Auth
-            driveSaveBtn.addEventListener('click', () => {
-                requireAuthAndExecute(() => {
-                    if(!currentFileId) { saveAsModal.style.display = 'flex'; } 
-                    else { saveFileToDrive(currentFileId); }
-                });
-            });
-
-            driveLoadBtn.addEventListener('click', () => {
-                requireAuthAndExecute(() => {
-                    loadModal.style.display = 'flex';
-                    fetchScriptsList();
-                });
-            });
-
-            // Initial Key Setup (One-time)
-            saveKeysBtn.addEventListener('click', () => {
-                const clientId = document.getElementById('gdrive-client-id').value.trim();
-                const apiKey = document.getElementById('gdrive-api-key').value.trim();
-                if(!clientId || !apiKey) { updateStatus('Enter both keys!', true); return; }
-
-                driveClientId = clientId; 
-                driveApiKey = apiKey;
-                localStorage.setItem('gdrive_clientId', driveClientId);
-                localStorage.setItem('gdrive_apiKey', driveApiKey);
-                
-                driveModal.style.display = 'none';
-                
-                initGoogleClients();
-                // Immediately trigger Google Sign in popup
-                setTimeout(() => { tokenClient.requestAccessToken(); }, 500);
-            });
-
-            // Logout / Clear Keys
-            clearKeysBtn.addEventListener('click', () => {
-                localStorage.removeItem('gdrive_clientId');
-                localStorage.removeItem('gdrive_apiKey');
-                localStorage.removeItem('gdrive_token');
-                localStorage.removeItem('gdrive_mainFolderId');
-                driveClientId = ''; driveApiKey = '';
-                accessToken = null; tokenExpiry = null;
-                currentFileId = null; mainFolderId = null;
-                if(autoSaveIntervalId) clearInterval(autoSaveIntervalId);
-                
-                document.getElementById('gdrive-client-id').value = '';
-                document.getElementById('gdrive-api-key').value = '';
-                settingsModal.style.display = 'none';
-                updateStatus('Logged Out & Keys Cleared', true);
-            });
-
-            // Folder Management
-            async function getOrCreateFolder() {
-                try {
-                    const query = `mimeType='application/vnd.google-apps.folder' and name='${FOLDER_NAME}' and trashed=false`;
-                    let res = await gapi.client.drive.files.list({ q: query, spaces: 'drive' });
-                    if(res.result.files && res.result.files.length > 0) {
-                        mainFolderId = res.result.files[0].id;
+                initDriveClient().then(() => {
+                    if (hasUsableToken()) {
+                        gapi.client.setToken({ access_token: accessToken });
+                        pendingDriveAction && pendingDriveAction();
+                        pendingDriveAction = null;
                     } else {
-                        const fileMetadata = { name: FOLDER_NAME, mimeType: 'application/vnd.google-apps.folder' };
-                        res = await gapi.client.drive.files.create({ resource: fileMetadata, fields: 'id' });
-                        mainFolderId = res.result.id;
+                        requestToken();
                     }
-                    localStorage.setItem('gdrive_mainFolderId', mainFolderId);
-                } catch(e) { console.error("Folder error:", e); }
+                }).catch(() => updateStatus('Drive init failed', true));
             }
 
-            // Save File Action
-            confirmSaveBtn.addEventListener('click', () => {
-                const fileName = document.getElementById('save-filename').value.trim() || 'Untitled_Script';
-                saveAsModal.style.display = 'none';
-                saveFileToDrive(null, fileName + '.html');
-            });
-
-            async function saveFileToDrive(existingId = null, newName = null) {
-                if(!accessToken || !mainFolderId) return;
-                
-                saveStatusText.textContent = existingId ? 'Auto-saving...' : 'Saving...';
-                saveStatusBox.style.opacity = '1';
-
-                const wasEditing = mainContainer.getAttribute('contenteditable') === 'true';
-                if(wasEditing) mainContainer.setAttribute('contenteditable', 'false');
-                const fileContent = document.documentElement.outerHTML;
-                if(wasEditing) mainContainer.setAttribute('contenteditable', 'true');
-
-                const metadata = { mimeType: 'text/html' };
-                if(newName) { metadata.name = newName; metadata.parents = [mainFolderId]; }
-
-                const boundary = '-------314159265358979323846';
-                const body = "\r\n--" + boundary + "\r\n" +
-                    'Content-Type: application/json\r\n\r\n' + JSON.stringify(metadata) +
-                    "\r\n--" + boundary + "\r\n" +
-                    'Content-Type: text/html\r\n\r\n' + fileContent +
-                    "\r\n--" + boundary + "--";
-
-                const url = existingId 
-                    ? `https://www.googleapis.com/upload/drive/v3/files/${existingId}?uploadType=multipart`
-                    : 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart';
-
-                try {
-                    const response = await fetch(url, {
-                        method: existingId ? 'PATCH' : 'POST', 
-                        headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'multipart/related; boundary=' + boundary },
-                        body: body
+            function initDriveClient() {
+                if (tokenClient) return Promise.resolve();
+                if (!window.gapi || !window.google) {
+                    updateStatus('Google libraries loading...', false, true);
+                    return new Promise((resolve, reject) => {
+                        let attempts = 0;
+                        const wait = setInterval(() => {
+                            attempts++;
+                            if (window.gapi && window.google) {
+                                clearInterval(wait);
+                                initDriveClient().then(resolve).catch(reject);
+                            }
+                            if (attempts > 40) {
+                                clearInterval(wait);
+                                reject(new Error('Google libraries unavailable'));
+                            }
+                        }, 250);
                     });
-                    const data = await response.json();
-                    if(data.id) {
-                        currentFileId = data.id; 
-                        updateStatus('Saved!');
-                    }
-                } catch(e) { updateStatus('Save Error', true); }
+                }
+                return new Promise((resolve, reject) => {
+                    gapi.load('client', () => {
+                        gapi.client.init({
+                            apiKey: driveApiKey,
+                            discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
+                        }).then(() => {
+                            if (hasUsableToken()) {
+                                gapi.client.setToken({ access_token: accessToken });
+                            }
+                            tokenClient = google.accounts.oauth2.initTokenClient({
+                                client_id: driveClientId,
+                                scope: 'https://www.googleapis.com/auth/drive.file',
+                                callback: (tokenResponse) => {
+                                    if (tokenResponse.error) {
+                                        updateStatus('Auth failed', true);
+                                        return;
+                                    }
+                                    cacheToken(tokenResponse);
+                                    updateStatus('Drive Ready');
+                                    configureAutoSave();
+                                    if (pendingDriveAction) pendingDriveAction();
+                                    pendingDriveAction = null;
+                                }
+                            });
+                            resolve();
+                        }).catch(reject);
+                    });
+                });
             }
 
-            // Load File Action
-            async function fetchScriptsList() {
-                if(!mainFolderId) await getOrCreateFolder();
-                fileListContainer.innerHTML = '<div class="p-4 text-center text-sm text-gray-500"><i class="fa-solid fa-spinner fa-spin"></i> Scanning Drive...</div>';
-                
-                try {
-                    const query = `'${mainFolderId}' in parents and mimeType='text/html' and trashed=false`;
-                    const res = await gapi.client.drive.files.list({ q: query, fields: 'files(id, name, modifiedTime)' });
-                    const files = res.result.files;
+            function requestToken() {
+                const alreadyGranted = localStorage.getItem(STORAGE.consent) === 'true';
+                tokenClient.requestAccessToken({ prompt: alreadyGranted ? '' : 'consent' });
+            }
 
-                    if(!files || files.length === 0) {
-                        fileListContainer.innerHTML = '<div class="p-4 text-center text-sm text-gray-500">No scripts found.</div>';
+            async function getScriptFolderId() {
+                if (driveFolderId) return driveFolderId;
+                updateStatus('Finding script folder...', false, true);
+                const folderName = 'dS_Frameworks_Scripts';
+                const query = `mimeType='application/vnd.google-apps.folder' and name='${folderName}' and trashed=false`;
+                const existing = await gapi.client.drive.files.list({
+                    q: query,
+                    fields: 'files(id,name)',
+                    spaces: 'drive'
+                });
+                if (existing.result.files && existing.result.files.length) {
+                    driveFolderId = existing.result.files[0].id;
+                    return driveFolderId;
+                }
+                const created = await gapi.client.drive.files.create({
+                    resource: { name: folderName, mimeType: 'application/vnd.google-apps.folder' },
+                    fields: 'id'
+                });
+                driveFolderId = created.result.id;
+                return driveFolderId;
+            }
+
+            function currentHtml() {
+                const wasEditing = mainContainer.getAttribute('contenteditable') === 'true';
+                if (wasEditing) mainContainer.setAttribute('contenteditable', 'false');
+                const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+                if (wasEditing) mainContainer.setAttribute('contenteditable', 'true');
+                return html;
+            }
+
+            async function uploadToDrive(isAutoSave) {
+                if (!hasUsableToken()) {
+                    if (isAutoSave) return;
+                    requestToken();
+                    return;
+                }
+                if (isAutoSave && !savedDriveFileId) return;
+                updateStatus(isAutoSave ? 'Saving...' : 'Saving...', false, true);
+                try {
+                    const folderId = await getScriptFolderId();
+                    const html = currentHtml();
+                    if (!savedDriveFileId) {
+                        const suggestedName = savedDriveFileName || 'dS_Frameworks_Opening_Scene.html';
+                        const chosen = prompt('Filename for Google Drive save:', suggestedName);
+                        if (!chosen) {
+                            updateStatus('Save cancelled');
+                            return;
+                        }
+                        savedDriveFileName = chosen.endsWith('.html') ? chosen : `${chosen}.html`;
+                        const boundary = '-------ds-frameworks-' + Date.now();
+                        const body = [
+                            `--${boundary}`,
+                            'Content-Type: application/json; charset=UTF-8',
+                            '',
+                            JSON.stringify({ name: savedDriveFileName, mimeType: 'text/html', parents: [folderId] }),
+                            `--${boundary}`,
+                            'Content-Type: text/html; charset=UTF-8',
+                            '',
+                            html,
+                            `--${boundary}--`
+                        ].join('\r\n');
+                        const response = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,name', {
+                            method: 'POST',
+                            headers: {
+                                Authorization: 'Bearer ' + accessToken,
+                                'Content-Type': 'multipart/related; boundary=' + boundary
+                            },
+                            body
+                        });
+                        if (!response.ok) throw new Error(await response.text());
+                        const data = await response.json();
+                        savedDriveFileId = data.id;
+                        localStorage.setItem(STORAGE.fileId, savedDriveFileId);
+                        localStorage.setItem(STORAGE.fileName, savedDriveFileName);
+                    } else {
+                        const response = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${savedDriveFileId}?uploadType=media`, {
+                            method: 'PATCH',
+                            headers: {
+                                Authorization: 'Bearer ' + accessToken,
+                                'Content-Type': 'text/html; charset=UTF-8'
+                            },
+                            body: html
+                        });
+                        if (!response.ok) throw new Error(await response.text());
+                    }
+                    updateStatus(isAutoSave ? 'Saved!' : 'Saved!');
+                } catch (error) {
+                    console.error(error);
+                    updateStatus('Drive save failed', true);
+                }
+            }
+
+            async function loadDriveProjects() {
+                try {
+                    const folderId = await getScriptFolderId();
+                    showModal('drive-load-modal');
+                    fileList.innerHTML = '<div class="text-sm text-gray-500">Loading Drive files...</div>';
+                    const response = await gapi.client.drive.files.list({
+                        q: `'${folderId}' in parents and mimeType='text/html' and trashed=false`,
+                        fields: 'files(id,name,modifiedTime)',
+                        orderBy: 'modifiedTime desc',
+                        spaces: 'drive'
+                    });
+                    const files = response.result.files || [];
+                    if (!files.length) {
+                        fileList.innerHTML = '<div class="text-sm text-gray-500">No .html projects found in dS_Frameworks_Scripts.</div>';
                         return;
                     }
-
-                    fileListContainer.innerHTML = '';
-                    files.forEach(f => {
-                        const date = new Date(f.modifiedTime).toLocaleDateString();
-                        const el = document.createElement('div');
-                        el.className = 'file-list-item text-black';
-                        el.innerHTML = `<i class="fa-brands fa-html5 text-blue-500 text-xl"></i> <div class="flex-1"><div class="font-bold">${f.name}</div><div class="text-xs text-gray-500">Last edited: ${date}</div></div>`;
-                        el.onclick = () => loadFileContent(f.id, f.name);
-                        fileListContainer.appendChild(el);
-                    });
-                } catch(e) { fileListContainer.innerHTML = '<div class="p-4 text-center text-red-500">Error loading files.</div>'; }
-            }
-
-            async function loadFileContent(id, name) {
-                loadModal.style.display = 'none';
-                saveStatusText.textContent = 'Loading...'; saveStatusBox.style.opacity = '1';
-                try {
-                    const res = await fetch(`https://www.googleapis.com/drive/v3/files/${id}?alt=media`, {
-                        headers: { 'Authorization': 'Bearer ' + accessToken }
-                    });
-                    const html = await res.text();
-                    
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    const loadedContent = doc.getElementById('main-content');
-                    
-                    if(loadedContent) {
-                        mainContainer.innerHTML = loadedContent.innerHTML;
-                        currentFileId = id; 
-                        document.title = name;
-                        updateStatus('Loaded Successfully!');
-                    }
-                } catch(e) { updateStatus('Load Error', true); }
-            }
-
-            // Auto-Save Settings
-            const manageAutoSave = () => {
-                if(autoSaveIntervalId) clearInterval(autoSaveIntervalId);
-                const interval = parseInt(autosaveSelect.value);
-                if(interval > 0) {
-                    autoSaveIntervalId = setInterval(() => {
-                        if(accessToken && tokenExpiry && Date.now() < tokenExpiry && currentFileId) {
-                            saveFileToDrive(currentFileId);
-                        }
-                    }, interval);
+                    fileList.innerHTML = files.map(file => `
+                        <button class="project-row" data-file-id="${file.id}" data-file-name="${file.name}">
+                            <span>
+                                <span class="block font-bold text-gray-900">${file.name}</span>
+                                <span class="block text-xs text-gray-500">${new Date(file.modifiedTime).toLocaleString()}</span>
+                            </span>
+                            <i class="fa-solid fa-chevron-right text-themeRed"></i>
+                        </button>
+                    `).join('');
+                } catch (error) {
+                    console.error(error);
+                    updateStatus('Load list failed', true);
                 }
-            };
-            autosaveSelect.addEventListener('change', manageAutoSave);
-            manageAutoSave(); // Start initially if token is valid
+            }
+
+            fileList.addEventListener('click', async (event) => {
+                const row = event.target.closest('.project-row');
+                if (!row) return;
+                updateStatus('Loading project...', false, true);
+                try {
+                    const response = await fetch(`https://www.googleapis.com/drive/v3/files/${row.dataset.fileId}?alt=media`, {
+                        headers: { Authorization: 'Bearer ' + accessToken }
+                    });
+                    if (!response.ok) throw new Error(await response.text());
+                    const html = await response.text();
+                    const doc = new DOMParser().parseFromString(html, 'text/html');
+                    const importedMain = doc.getElementById('main-content');
+                    if (!importedMain) throw new Error('No #main-content found');
+                    mainContainer.innerHTML = importedMain.innerHTML;
+                    savedDriveFileId = row.dataset.fileId;
+                    savedDriveFileName = row.dataset.fileName;
+                    localStorage.setItem(STORAGE.fileId, savedDriveFileId);
+                    localStorage.setItem(STORAGE.fileName, savedDriveFileName);
+                    hideModal('drive-load-modal');
+                    updateStatus('Project loaded');
+                    configureAutoSave();
+                } catch (error) {
+                    console.error(error);
+                    updateStatus('Project load failed', true);
+                }
+            });
+
+            function configureAutoSave() {
+                if (autoSaveTimer) clearInterval(autoSaveTimer);
+                const interval = localStorage.getItem(STORAGE.autosave) || document.getElementById('autosave-select').value || '120000';
+                if (interval === 'off' || !savedDriveFileId || !hasUsableToken()) return;
+                autoSaveTimer = setInterval(() => uploadToDrive(true), Number(interval));
+            }
+
+            configureAutoSave();
+            updateStatus(savedDriveFileId ? 'Ready' : 'Ready');
         });
     </script>
 </body>

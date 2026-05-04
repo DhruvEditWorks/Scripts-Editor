@@ -995,8 +995,8 @@
                 hideModal('settings-modal');
             });
 
-            editBtn.addEventListener('click', () => {
-                isEditing = !isEditing;
+            function setEditMode(enabled) {
+                isEditing = enabled;
                 mainContainer.setAttribute('contenteditable', String(isEditing));
                 if (isEditing) {
                     editBtn.innerHTML = '<i class="fa-solid fa-check"></i> Finish Editing';
@@ -1007,6 +1007,10 @@
                     editBtn.classList.replace('bg-green-600', 'bg-gray-800');
                     editBtn.classList.replace('hover:bg-green-700', 'hover:bg-gray-900');
                 }
+            }
+
+            editBtn.addEventListener('click', () => {
+                setEditMode(!isEditing);
             });
 
             document.getElementById('print-btn').addEventListener('click', () => showModal('print-reminder-modal'));
@@ -1252,13 +1256,16 @@
                     const doc = new DOMParser().parseFromString(html, 'text/html');
                     const importedMain = doc.getElementById('main-content');
                     if (!importedMain) throw new Error('No #main-content found');
+                    const shouldStartEditing = importedMain.dataset.startEditing === 'true';
                     mainContainer.innerHTML = importedMain.innerHTML;
+                    mainContainer.dataset.startEditing = importedMain.dataset.startEditing || '';
                     savedDriveFileId = row.dataset.fileId;
                     savedDriveFileName = row.dataset.fileName;
                     localStorage.setItem(STORAGE.fileId, savedDriveFileId);
                     localStorage.setItem(STORAGE.fileName, savedDriveFileName);
                     hideModal('drive-load-modal');
                     updateStatus('Project loaded');
+                    if (shouldStartEditing) setEditMode(true);
                     configureAutoSave();
                 } catch (error) {
                     console.error(error);

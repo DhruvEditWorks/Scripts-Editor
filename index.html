@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Opening Scene Script - dS Frameworks</title>
@@ -206,24 +202,24 @@
 </head>
 <body class="font-sans leading-relaxed tracking-wide selection:bg-themeRed selection:text-white">
 
-    <!-- Auth / Setup Modal -->
+    <!-- Auth / Setup Modal (Appears Only Once) -->
     <div id="drive-setup-modal" class="modal-overlay hide-on-print">
         <div class="modal-content text-center">
-            <h2 class="text-2xl font-bold mb-2 flex items-center justify-center gap-2"><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" class="w-6 h-6"> Connect Drive</h2>
-            <p class="text-gray-600 text-sm mb-6">Enter your credentials to enable cloud saving and loading. Data is stored locally in your session.</p>
+            <h2 class="text-2xl font-bold mb-2 flex items-center justify-center gap-2"><i class="fa-solid fa-key text-blue-500"></i> API Setup</h2>
+            <p class="text-gray-600 text-sm mb-6">Enter your credentials once. They will be saved securely in your browser for seamless Google Sign-In later.</p>
             <div class="space-y-4 text-left">
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Google Client ID</label>
-                    <input type="text" id="gdrive-client-id" placeholder="Enter Client ID..." class="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500">
+                    <input type="text" id="gdrive-client-id" placeholder="Paste Client ID..." class="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500">
                 </div>
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Google API Key</label>
-                    <input type="text" id="gdrive-api-key" placeholder="Enter API Key..." class="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500">
+                    <input type="text" id="gdrive-api-key" placeholder="Paste API Key..." class="w-full border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500">
                 </div>
             </div>
             <div class="flex flex-col gap-3 mt-8">
-                <button id="auth-drive-btn" class="w-full bg-white border border-gray-300 hover:bg-gray-50 text-gray-800 font-bold py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" class="w-5 h-5"> Sign in with Google
+                <button id="save-keys-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-colors shadow-sm">
+                    Save Keys & Connect
                 </button>
                 <button onclick="document.getElementById('drive-setup-modal').style.display='none'" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 rounded-lg transition-colors">Cancel</button>
             </div>
@@ -268,7 +264,7 @@
                 </div>
             </div>
 
-            <div class="mb-8">
+            <div class="mb-6 border-b border-gray-100 pb-6">
                 <label class="block text-sm font-bold text-gray-700 mb-2">Auto-Save Interval</label>
                 <select id="autosave-interval-select" class="w-full border border-gray-300 rounded-lg p-3 text-sm text-black">
                     <option value="60000">Every 1 Minute</option>
@@ -276,6 +272,12 @@
                     <option value="300000">Every 5 Minutes</option>
                     <option value="0">Off (Manual Save Only)</option>
                 </select>
+            </div>
+            
+            <div class="mb-6">
+                <button id="clear-keys-btn" class="w-full bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 font-bold py-3 rounded-lg transition-colors text-sm">
+                    <i class="fa-solid fa-right-from-bracket mr-2"></i> Clear Saved Keys & Logout
+                </button>
             </div>
 
             <button onclick="document.getElementById('settings-modal').style.display='none'" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg">Done</button>
@@ -449,7 +451,7 @@
             document.getElementById('print-btn').addEventListener('click', () => window.print());
 
             // ==========================================
-            // GOOGLE DRIVE API INTEGRATION
+            // GOOGLE DRIVE API INTEGRATION (WITH COOKIE/LOCAL STORAGE)
             // ==========================================
             const driveSaveBtn = document.getElementById('save-drive-btn');
             const driveLoadBtn = document.getElementById('load-drive-btn');
@@ -458,21 +460,26 @@
             const saveAsModal = document.getElementById('save-as-modal');
             const loadModal = document.getElementById('load-modal');
             
-            const authDriveBtn = document.getElementById('auth-drive-btn');
+            const saveKeysBtn = document.getElementById('save-keys-btn');
             const confirmSaveBtn = document.getElementById('confirm-save-btn');
+            const clearKeysBtn = document.getElementById('clear-keys-btn');
+            
             const fileListContainer = document.getElementById('file-list-container');
             const autosaveSelect = document.getElementById('autosave-interval-select');
             
             const saveStatusText = document.getElementById('save-status-text');
             const saveStatusBox = document.getElementById('save-status');
             
-            let driveClientId = '';
-            let driveApiKey = '';
-            let tokenClient;
+            // Core Storage Variables
+            let driveClientId = localStorage.getItem('gdrive_clientId') || '';
+            let driveApiKey = localStorage.getItem('gdrive_apiKey') || '';
             let accessToken = null;
-            let mainFolderId = null;
+            let tokenExpiry = null;
+            let tokenClient;
+            let mainFolderId = localStorage.getItem('gdrive_mainFolderId') || null;
             let currentFileId = null; 
             let autoSaveIntervalId = null;
+            let pendingAction = null;
 
             const FOLDER_NAME = 'dS_Frameworks_Scripts';
 
@@ -483,63 +490,132 @@
                 setTimeout(() => { saveStatusBox.style.opacity = '0'; }, 3000);
             };
 
-            // Triggers Auth Flow
-            const requireAuth = (callback) => {
-                if(accessToken) { callback(); return; }
-                if(!driveClientId || !driveApiKey) {
-                    driveModal.style.display = 'flex';
-                } else {
-                    tokenClient.requestAccessToken();
+            // Check if existing token is valid
+            const storedTokenStr = localStorage.getItem('gdrive_token');
+            if (storedTokenStr) {
+                const tokenData = JSON.parse(storedTokenStr);
+                if (Date.now() < tokenData.expiry) {
+                    accessToken = tokenData.access_token;
+                    tokenExpiry = tokenData.expiry;
                 }
-            };
+            }
 
-            driveSaveBtn.addEventListener('click', () => {
-                requireAuth(() => {
-                    if(!currentFileId) {
-                        saveAsModal.style.display = 'flex';
-                    } else {
-                        saveFileToDrive(currentFileId); // Overwrite existing
-                    }
-                });
-            });
-
-            driveLoadBtn.addEventListener('click', () => {
-                requireAuth(() => {
-                    loadModal.style.display = 'flex';
-                    fetchScriptsList();
-                });
-            });
-
-            authDriveBtn.addEventListener('click', () => {
-                const clientId = document.getElementById('gdrive-client-id').value.trim();
-                const apiKey = document.getElementById('gdrive-api-key').value.trim();
-                if(!clientId || !apiKey) { updateStatus('Enter both keys!', true); return; }
-
-                driveClientId = clientId; driveApiKey = apiKey;
-                driveModal.style.display = 'none';
+            // Initialize Google API Clients quietly in background
+            function initGoogleClients() {
+                if(!driveClientId || !driveApiKey) return;
                 
                 gapi.load('client', () => {
                     gapi.client.init({
                         apiKey: driveApiKey,
                         discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
-                    }).then(() => {
-                        tokenClient = google.accounts.oauth2.initTokenClient({
-                            client_id: driveClientId,
-                            scope: 'https://www.googleapis.com/auth/drive.file',
-                            callback: async (res) => {
-                                if (res.error) { updateStatus('Auth Failed', true); return; }
-                                accessToken = res.access_token;
-                                updateStatus('Connected!');
-                                await getOrCreateFolder();
-                                manageAutoSave();
-                            }
-                        });
-                        tokenClient.requestAccessToken();
-                    });
+                    }).catch(e => console.error('GAPI Init Error', e));
+                });
+
+                tokenClient = google.accounts.oauth2.initTokenClient({
+                    client_id: driveClientId,
+                    scope: 'https://www.googleapis.com/auth/drive.file',
+                    callback: async (res) => {
+                        if (res.error) { updateStatus('Auth Cancelled', true); return; }
+                        
+                        accessToken = res.access_token;
+                        tokenExpiry = Date.now() + (res.expires_in * 1000);
+                        res.expiry = tokenExpiry;
+                        localStorage.setItem('gdrive_token', JSON.stringify(res));
+                        
+                        updateStatus('Connected!');
+                        if(!mainFolderId) await getOrCreateFolder();
+                        manageAutoSave();
+
+                        // Execute pending action (Save or Load)
+                        if (pendingAction) {
+                            pendingAction();
+                            pendingAction = null;
+                        }
+                    }
+                });
+            }
+
+            // Call immediately if keys are already saved
+            if (driveClientId && driveApiKey) {
+                initGoogleClients();
+            }
+
+            // Core Function: Request Auth if needed, then execute callback
+            const requireAuthAndExecute = (callback) => {
+                // If Token is valid, execute immediately
+                if (accessToken && tokenExpiry && Date.now() < tokenExpiry) {
+                    if (!mainFolderId) {
+                        getOrCreateFolder().then(callback);
+                    } else {
+                        callback();
+                    }
+                    return;
+                }
+                
+                // Keep callback in memory
+                pendingAction = callback;
+
+                // If Keys are missing, show setup modal
+                if (!driveClientId || !driveApiKey) {
+                    driveModal.style.display = 'flex';
+                } else {
+                    // Keys exist but token expired/missing -> Show Google Login Popup directly!
+                    if(!tokenClient) initGoogleClients();
+                    tokenClient.requestAccessToken({prompt: ''}); 
+                }
+            };
+
+            // Buttons that require Auth
+            driveSaveBtn.addEventListener('click', () => {
+                requireAuthAndExecute(() => {
+                    if(!currentFileId) { saveAsModal.style.display = 'flex'; } 
+                    else { saveFileToDrive(currentFileId); }
                 });
             });
 
-            // Ensure Folder Exists
+            driveLoadBtn.addEventListener('click', () => {
+                requireAuthAndExecute(() => {
+                    loadModal.style.display = 'flex';
+                    fetchScriptsList();
+                });
+            });
+
+            // Initial Key Setup (One-time)
+            saveKeysBtn.addEventListener('click', () => {
+                const clientId = document.getElementById('gdrive-client-id').value.trim();
+                const apiKey = document.getElementById('gdrive-api-key').value.trim();
+                if(!clientId || !apiKey) { updateStatus('Enter both keys!', true); return; }
+
+                driveClientId = clientId; 
+                driveApiKey = apiKey;
+                localStorage.setItem('gdrive_clientId', driveClientId);
+                localStorage.setItem('gdrive_apiKey', driveApiKey);
+                
+                driveModal.style.display = 'none';
+                
+                initGoogleClients();
+                // Immediately trigger Google Sign in popup
+                setTimeout(() => { tokenClient.requestAccessToken(); }, 500);
+            });
+
+            // Logout / Clear Keys
+            clearKeysBtn.addEventListener('click', () => {
+                localStorage.removeItem('gdrive_clientId');
+                localStorage.removeItem('gdrive_apiKey');
+                localStorage.removeItem('gdrive_token');
+                localStorage.removeItem('gdrive_mainFolderId');
+                driveClientId = ''; driveApiKey = '';
+                accessToken = null; tokenExpiry = null;
+                currentFileId = null; mainFolderId = null;
+                if(autoSaveIntervalId) clearInterval(autoSaveIntervalId);
+                
+                document.getElementById('gdrive-client-id').value = '';
+                document.getElementById('gdrive-api-key').value = '';
+                settingsModal.style.display = 'none';
+                updateStatus('Logged Out & Keys Cleared', true);
+            });
+
+            // Folder Management
             async function getOrCreateFolder() {
                 try {
                     const query = `mimeType='application/vnd.google-apps.folder' and name='${FOLDER_NAME}' and trashed=false`;
@@ -551,10 +627,11 @@
                         res = await gapi.client.drive.files.create({ resource: fileMetadata, fields: 'id' });
                         mainFolderId = res.result.id;
                     }
+                    localStorage.setItem('gdrive_mainFolderId', mainFolderId);
                 } catch(e) { console.error("Folder error:", e); }
             }
 
-            // Save Logic (New or Overwrite)
+            // Save File Action
             confirmSaveBtn.addEventListener('click', () => {
                 const fileName = document.getElementById('save-filename').value.trim() || 'Untitled_Script';
                 saveAsModal.style.display = 'none';
@@ -564,7 +641,7 @@
             async function saveFileToDrive(existingId = null, newName = null) {
                 if(!accessToken || !mainFolderId) return;
                 
-                saveStatusText.textContent = existingId ? 'Auto-saving...' : 'Saving Project...';
+                saveStatusText.textContent = existingId ? 'Auto-saving...' : 'Saving...';
                 saveStatusBox.style.opacity = '1';
 
                 const wasEditing = mainContainer.getAttribute('contenteditable') === 'true';
@@ -588,19 +665,19 @@
 
                 try {
                     const response = await fetch(url, {
-                        method: existingId ? 'PATCH' : 'POST', // PATCH overwrites the exact file, preventing duplicates
+                        method: existingId ? 'PATCH' : 'POST', 
                         headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'multipart/related; boundary=' + boundary },
                         body: body
                     });
                     const data = await response.json();
                     if(data.id) {
-                        currentFileId = data.id; // Remember to overwrite next time
-                        updateStatus(existingId ? 'Updated' : 'Project Saved!');
+                        currentFileId = data.id; 
+                        updateStatus('Saved!');
                     }
                 } catch(e) { updateStatus('Save Error', true); }
             }
 
-            // Load Logic
+            // Load File Action
             async function fetchScriptsList() {
                 if(!mainFolderId) await getOrCreateFolder();
                 fileListContainer.innerHTML = '<div class="p-4 text-center text-sm text-gray-500"><i class="fa-solid fa-spinner fa-spin"></i> Scanning Drive...</div>';
@@ -611,7 +688,7 @@
                     const files = res.result.files;
 
                     if(!files || files.length === 0) {
-                        fileListContainer.innerHTML = '<div class="p-4 text-center text-sm text-gray-500">No scripts found in folder.</div>';
+                        fileListContainer.innerHTML = '<div class="p-4 text-center text-sm text-gray-500">No scripts found.</div>';
                         return;
                     }
 
@@ -619,7 +696,7 @@
                     files.forEach(f => {
                         const date = new Date(f.modifiedTime).toLocaleDateString();
                         const el = document.createElement('div');
-                        el.className = 'file-list-item';
+                        el.className = 'file-list-item text-black';
                         el.innerHTML = `<i class="fa-brands fa-html5 text-blue-500 text-xl"></i> <div class="flex-1"><div class="font-bold">${f.name}</div><div class="text-xs text-gray-500">Last edited: ${date}</div></div>`;
                         el.onclick = () => loadFileContent(f.id, f.name);
                         fileListContainer.appendChild(el);
@@ -636,14 +713,13 @@
                     });
                     const html = await res.text();
                     
-                    // Extract content inside #main-content
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(html, 'text/html');
                     const loadedContent = doc.getElementById('main-content');
                     
                     if(loadedContent) {
                         mainContainer.innerHTML = loadedContent.innerHTML;
-                        currentFileId = id; // Set ID so future saves overwrite THIS loaded file
+                        currentFileId = id; 
                         document.title = name;
                         updateStatus('Loaded Successfully!');
                     }
@@ -656,11 +732,14 @@
                 const interval = parseInt(autosaveSelect.value);
                 if(interval > 0) {
                     autoSaveIntervalId = setInterval(() => {
-                        if(accessToken && currentFileId) saveFileToDrive(currentFileId);
+                        if(accessToken && tokenExpiry && Date.now() < tokenExpiry && currentFileId) {
+                            saveFileToDrive(currentFileId);
+                        }
                     }, interval);
                 }
             };
             autosaveSelect.addEventListener('change', manageAutoSave);
+            manageAutoSave(); // Start initially if token is valid
         });
     </script>
 </body>
